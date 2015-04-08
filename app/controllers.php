@@ -232,5 +232,5 @@ $app->get('/{user}/settings', function ($user) use ($app){
 })->bind('settings');
 
 $app->get('/{user}/tape', function ($user) use ($app){
-
+    return $app['twig']->render('tape.twig');
 });
