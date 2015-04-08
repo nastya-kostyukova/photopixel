@@ -1,0 +1,13 @@
+{% extends 'account.twig' %}
+
+{% block content %}
+
+    {% if flag_no_image  == 'TRUE'%}
+        Not uploaded any photo :(
+    {% else %}
+        {%  for image in images %}
+            <div class="content-img"><img src="{{ image }}" width="400"></div>
+        {% endfor %}
+    {% endif %}
+
+{%  endblock %}

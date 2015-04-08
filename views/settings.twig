@@ -1,0 +1,26 @@
+{% extends 'account.twig' %}
+
+{% block content %}
+    <div id="login-reg">
+        <form method="post" target="/" action="/register">
+            <fieldset id="inputs">
+                <input type="text" name="forename" id="forename-input" placeholder="Forename" autofocus required>
+                <input type="text" name="surname" id="surname-input" placeholder="Surname" required>
+                <select size="3" multiple name="gender[]">
+                    <option disabled>Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <input type="text" name="description" id="description-input" placeholder="Description" required>
+                <input type="text" name="birthday-day" id="birthday-day-input" placeholder="Birthday day" required>
+                <input type="text" name="birthday-month" id="birthday-month-input" placeholder="Birthday month" required>
+                <input type="text" name="birthday-year" id="birthday-year-input" placeholder="Birthday year" required>
+                <input type="text" name="country" id="country-input" placeholder="Country" required>
+                <input type="text" name="city" id="city-input" placeholder="City" required>
+            </fieldset>
+            <fieldset id="actions">
+                <input type="submit" id ="submit" value="Enter">
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

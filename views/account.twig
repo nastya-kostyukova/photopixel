@@ -1,0 +1,64 @@
+{% extends 'template.twig' %}
+
+{% block title %}
+    {{ user_name }} Photo with Photopixels
+{% endblock %}
+
+{% block style_name %}style-user-profile
+{% endblock %}
+
+{% block body %}
+<div id="header">
+    <div id="head-img">
+    </div>
+    <div class="wrapper clearfix">
+        <img src="../css/images/Y4HEAT-nFuI.png" width="220">
+        <div id="exit">
+            <a href="{{ path("exit", {'user': user_name}) }}">Exit</a>
+        </div>
+    </div>
+</div>
+<div  id="cover">
+    <br>
+    <div id="shadow-container">
+        <div id="user-profile">
+            <div id="user-profile-img">
+                <img src="background1.jpg" width="150">
+            </div>
+            <div id="user-profile-name">
+                {{ user_name }}
+                {% if user_check_flag == 'TRUE' %}
+                    {% if user_is_followed == 'FALSE' %}
+                    <div id="follow">
+                        <a href="{{ path("follow_user", {'user': user_name}) }}">Follow</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if user_is_followed == 'TRUE'%}
+                    <div id="followed">
+                        <a href="{{ path("followed_user", {'user': user_name}) }}">Followed</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div id="user-profile-content">
+                <!-- user_readers -->
+            </div>
+        </div>
+        <div class="fill-menu">
+            <ul class="menu">
+
+                <li {% if select == 'home' %} class="menu-selected" {% endif %} ><a href="{{ path('user_account', {'user' : user_name }) }} ">Home</a></li>
+                <li {% if select == 'upload' %} class="menu-selected" {% endif %} ><a href="{{ path('user_upload', {'user' : user_name }) }} ">Upload</a></li>
+                <li {% if select == 'settings' %} class="menu-selected" {% endif %} ><a href="{{ path('settings', {'user' : user_name }) }} ">Settings</a></li>
+
+                <li><a href="#">Tape</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+{% endblock %}
