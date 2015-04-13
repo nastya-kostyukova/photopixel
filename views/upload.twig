@@ -1,12 +1,27 @@
-{% extends 'account.twig'  %}
-{% block content %}
+{% extends 'template.twig'  %}
+{% block title %}
+    {{ user_name }}| Photo with Photopixels
+{% endblock %}
 
-<form action="{{ path('user_upload', {'user' : user_name }) }}" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="text" name="title" id="title-input" placeholder="Title" autofocus required>
-    <input type="text" name="description" id="description-input" placeholder="Description" autofocus required>
-    <input type="submit" value="Upload Image" name="submit">
-</form>
-    {{ message }}
+{% block style_name %}style-upload
+{% endblock %}
+{% block body %}
+    <div id="content">
+        <fieldset id="photo">
+            <form action="{{ path('user_upload', {'user' : user_name }) }}" method="post" enctype="multipart/form-data">
+                <div id="upload-area">
+                    Select image to upload:
+                    <input type="file" name="fileToUpload" placeholder="Brawse photo" id="fileToUpload">
+                </div>
+            </form>
+            {{ message }}
+        </fieldset>
+        <fieldset id="inputs">
+            <label>Title
+            <input type="text" name="title" id="title-input" autofocus required></label>
+            <label>Description
+            <textarea  name="description" id="description-input"  autofocus required> </textarea></label>
+            <input type="submit" id="upload" value="Upload" name="submit">
+        </fieldset>
+    </div>
 {% endblock %}

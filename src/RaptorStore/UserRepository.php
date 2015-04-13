@@ -86,7 +86,9 @@ class UserRepository extends BaseRepository implements UserProviderInterface
         return array('status' => 'ok', 'message' => 'You are registered!');
 
     }
+    public function savePassword($login, $password, $password_again){
 
+    }
     /**
      * Turns an array of data into a User object
      *

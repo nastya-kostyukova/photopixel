@@ -1,0 +1,26 @@
+{% extends 'template.twig' %}
+
+{% block title %}
+    {{ user_name }} Photo with Photopixels
+{% endblock %}
+
+{% block style_name %}style-tape
+{% endblock %}
+{% block body %}
+    {% for post in posts %}
+    <div id="content">
+        <div id="post">
+            <div id="avatar"><img src="background1.jpg" width="100"></div>
+            <div id="user-name">{{ post.login }}</div>
+            <div id="description">{{ post.description }} </div>
+            <div id="photo-post"><img src="upload/{{ post.login }}/{{ post.url }}" width="800"> </div>
+            <div id="date-and-comments">
+                 {{ post.published_date }}  |  <a href="">   Comments</a>
+            </div>
+            <div id="likes">
+                <a href="">likes</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

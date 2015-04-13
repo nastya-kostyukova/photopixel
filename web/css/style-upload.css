@@ -1,0 +1,97 @@
+body{
+    background-color: #47638D;
+    margin: 0;
+    color: #0044cc;
+}
+
+#inputs{
+    width:30%;
+    float:right;
+}
+
+#title-input, #description-input
+{
+    margin-top: 3%;
+    margin-bottom: 3%;
+    /*background: #f1f1f1 url(images/login-sprite.png) no-repeat;*/
+    padding: 15px 15px 15px 30px;
+    width: 353px; /* 353 + 2 + 45 = 400 */
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+}
+
+#description-input{
+    height: 515px;
+}
+
+#photo{
+    width: 64%;
+    float:left;
+    height: 730px;
+    vertical-align: middle;
+}
+
+#upload-area{
+    margin-left:30%;
+    margin-top: 35%;
+}
+
+#upload{
+    min-width: 100px;
+    height: 40px;
+    text-align: center;
+    line-height: 38px;
+    font-size: 16px;
+
+    margin-top: 2%;
+    width: 100px;
+
+    background-color: #1A497E;
+    background-image: linear-gradient(top, #2196E9, #1A497E);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#2196E9), to(#1A497E));
+    background-image: -webkit-linear-gradient(top, #2196E9, #1A497E);
+    background-image: -moz-linear-gradient(top, #2196E9, #1A497E);
+    background-image: -ms-linear-gradient(top, #2196E9, #1A497E);
+    background-image: -o-linear-gradient(top, #2196E9, #1A497E);
+    background-image: linear-gradient(top, #2196E9, #1A497E);
+    color: #efefef;
+    border-color: #1A497E #1A497E #0C2B4D;
+
+    border-radius: 8%;
+
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+
+    border-width: 1px;
+    border-style: solid;
+}
+
+#upload a:hover{
+    background-color: #1A497E;
+    background-image: linear-gradient(top, #1A497E, #2196E9);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#1A497E), to(#2196E9));
+    background-image: -webkit-linear-gradient(top, #1A497E, #2196E9);
+    background-image: -moz-linear-gradient(top, #1A497E, #2196E9);
+    background-image: -ms-linear-gradient(top, #1A497E, #2196E9);
+    background-image: -o-linear-gradient(top, #1A497E, #2196E9);
+    background-image: linear-gradient(top, #1A497E, #2196E9);
+    color: #efefef;
+    border-color: #1A497E #1A497E #0C2B4D;
+}
+
+#content{
+    width:70%;
+    margin:auto;
+    margin-top: 3%;
+    background-color: #efefef;
+    border-radius: 1%;
+    height: 750px;
+    padding: 2%;
+}

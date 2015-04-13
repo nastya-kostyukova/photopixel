@@ -2,9 +2,6 @@
 /** @var $app \Silex\Application */
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use RaptorStore\User;
-use RaptorStore\DB;
 use RaptorStore\Image;
 /**
  * Controllers and routes
@@ -15,10 +12,12 @@ $app->get('/', function(\Silex\Application $app) {
     {
         return $app->redirect('/'.$userSession['login']);
     }
-    return $app['twig']->render('homepage.twig', array('message_login' => '', 'message_register' => ''));
+    return $app['twig']->render('homepage
+
+    .twig', array('message_login' => '', 'message_register' => ''));
 });
 
-$app->get('/{user}/exit', function($user) use ($app){
+$app->get('/exit', function(\Silex\Application $app) {
     $app['session']->remove('user');
     return $app->redirect('/');
 })->bind('exit');
@@ -85,42 +84,40 @@ $app->get('/register', function(\Silex\Application $app) {
     return $app->redirect('/');
 })->bind('register');
 
-$app->get('/{user}', function (Request $request, $user) use ($app) {
+$app->get('/feed', function(\Silex\Application $app) use ($app){
+    $userSession = $app['session']->get('user');
+    $id_follower = $userSession['id'];
+    $sql = "SELECT u.login, i.url, i.title, i.description, i.published_date FROM users u INNER JOIN followers f JOIN images i ON f.id_following = u.id && i.id_author = u.id WHERE f.id_follower=? ORDER BY i.published_date DESC ";
+    $images = $app['db']->fetchAll($sql, array( (int) $id_follower));
+
+    return $app['twig']->render('tape.twig', array(
+        'user_name'=> $userSession['login'],
+        'posts'=> $images,
+    ));
+})->bind('feed');
+
+$app->get('/{user}', function ( $user) use ($app) {
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $user));
-    if ($user === $post['login']) {
+    $id_following = $post['id'];//его страница открыта;
+    if (isset($id_following)) {
         $images = $app['image']->getArrayUserImages($post);
-        if (null === $userSession = $app['session']->get('user'))
+        if (!($app['session']->has('user')))
         {
             $app->redirect('/');
         }
+        $userSession = $app['session']->get('user');
         if  ($user === $userSession['login']){
             $user_is_followed = '';
         }else {
-            $sql = "SELECT * FROM users WHERE login=?";
-            $post = $app['db']->fetchAssoc($sql, array((string) $user));
-            $id_followed = $post['id'];//его страница открыта
-            #$login = $userSession['login'];
-            #$post = $app['db']->fetchAssoc($sql, array((string)$login));
             $id_follower = $userSession['id'];
-
-            $sql = "SELECT * FROM followers WHERE id_follower=?";
-            $post = $app['db']->fetchAll($sql, array((int)$id_follower));
-
-            foreach ($post as $value) {
-                foreach ($value as $key => $type) {
-                    if ('id_followed' === $key) {
-                        if ($id_followed === $type) {
-                            $user_is_followed = 'TRUE';
-                        }
-
-                    }
-                }
-            }
-            if (!isset($user_is_followed)){
+            $sql= "SELECT id_follower, id_following FROM followers WHERE id_follower=? AND id_following=?";
+            $post = $app['db']->fetchAssoc($sql, array((int) $id_follower, (int) $id_following));
+            if (isset($post['id_follower'])){
+                $user_is_followed = 'TRUE';
+            }else{
                 $user_is_followed = 'FALSE';
             }
-
         }
 
         if ($user != $userSession['login']){
@@ -149,32 +146,25 @@ $app->get('/{user}', function (Request $request, $user) use ($app) {
 $app->get('/{user}/follow', function($user) use ($app) {
     $sql = "SELECT * FROM users WHERE login=?";
     $post = $app['db']->fetchAssoc($sql, array((string) $user));
-    $id_followed = $post['id'];
+    $id_following = $post['id'];
     $userSession = $app['session']->get('user');
     $id_follower = $userSession['id'];
 
-    #$app['db']->insert('users', array('login' => $login, 'password' => $password));
-    $app['db']->insert('followers', array('id_follower' => $id_follower, 'id_followed' => $id_followed));
+    $app['db']->insert('followers', array('id_following' => $id_following, 'id_follower' => $id_follower));
 
     return $app->redirect('/'.$user.'');
 })->bind('follow_user');
-/*
-$app->get('/{user}/follow', function ($user) use ($app){
-    echo $user;
-    return $app->redirect('/'.$user.'');
-})->bind('follow_user');
-*/
+
 $app->get('/{user}/followed', function($user) use ($app)
 {
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $user));
-    $id_followed = $post['id'];
+    $id_following = $post['id'];
     $userSession = $app['session']->get('user');
     $id_follower = $userSession['id'];
-
-    $sql = "DELETE FROM followers WHERE id_follower=?, id_followed=?";
-    $post = $app['db']->fetchAssoc($sql, array((int) $id_follower, (int) $id_followed));
-
+    $sql = "DELETE FROM followers WHERE id_follower=? AND id_following=?";
+    $post = $app['db']->fetchAssoc($sql, array((int) $id_follower, (int) $id_following));
+    $images = array();
     if ($userSession['login'] === $post['login']) {
         $images = $app['image']->getArrayUserImages($post);
     }
@@ -188,19 +178,22 @@ $app->get('/{user}/followed', function($user) use ($app)
         'message' => '',
         'images' => $images,
         'select' => 'home',
-        'user'=> 'user',
+        'user'=> $userSession['login'],
         'user_is_followed' => 'FALSE',
         'user_check_flag' => $user_check_flag,
     ));
 })->bind('followed_user');
 
-$app->get('/{user}/upload', function ($user) use ($app) {
+$app->get('/{user}/upload', function(\Silex\Application $app) use ($app) {
+    $userSession= $app['session']->get('user');
     return $app['twig']->render('upload.twig', array(
-        'user_name' => $user,
+        'user_name' => $userSession['login'],
         'message' => '',
         'select' => 'upload',
-        'user'=> 'user',
-        'user_is_followed' => ''));
+        'user'=> '',
+        'user_is_followed' => '',
+        'user_check_flag'=> '',
+        ));
 })->bind('user_upload');
 
 $app->post('/{user}/upload',  function(Request $request, $user) use ($app) {
@@ -228,9 +221,7 @@ $app->get('/{user}/settings', function ($user) use ($app){
         'message' => '',
         'select' => 'settings',
         'user'=> 'user',
+        'user_check_flag' => '',
+        'user_is_followed' => '',
     ));
 })->bind('settings');
-
-$app->get('/{user}/tape', function ($user) use ($app){
-    return $app['twig']->render('tape.twig');
-});

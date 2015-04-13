@@ -1,9 +1,57 @@
-body {
-    background: #333;
+
+/* HEADER */
+#header{
+    width: 100%;
+    background-color: #000;
+    opacity: 0.8;
+    height: 8%;
 }
-.main-content {
-    background: #fff;
-    min-height: 400px;
-    padding: 10px 0;
-    margin-bottom: 20px;
+
+.wrapper {
+    width: 960px;
+    margin: 0 auto;
 }
+
+.clearfix:after {
+    clear:both;
+    content:"";
+    display:block;
+    height:1%;
+    line-height:0;
+    visibility:hidden;
+}
+
+#exit{
+    margin-top:1%;
+    width: 100px;
+    float: right;
+    text-align:center;
+    background-image: linear-gradient(top, #C3BEBE, #666363);
+    background-color: #878080;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#C3BEBE), to(#666363));
+    background-image: -webkit-linear-gradient(top, #C3BEBE, #666363);
+    background-image: -moz-linear-gradient(top, #C3BEBE, #666363);
+    background-image: -ms-linear-gradient(top, #C3BEBE, #666363);
+    background-image: -o-linear-gradient(top, #C3BEBE, #666363);
+    background-image: linear-gradient(top, #C3BEBE, #666363);
+
+    border-color: #878080 #878080 #595454;
+    line-height: 30px;
+    border-radius: 4%;
+}
+
+#exit a{
+    text-decoration: none;
+    color: #efefef;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+#exit a:hover{
+    color: #2196E9;
+}
+
+
+

@@ -1,23 +1,14 @@
 {% extends 'template.twig' %}
 
 {% block title %}
-    {{ user_name }} Photo with Photopixels
+    {{ user }}| Photo with Photopixels
 {% endblock %}
 
 {% block style_name %}style-user-profile
 {% endblock %}
 
 {% block body %}
-<div id="header">
-    <div id="head-img">
-    </div>
-    <div class="wrapper clearfix">
-        <img src="../css/images/Y4HEAT-nFuI.png" width="220">
-        <div id="exit">
-            <a href="{{ path("exit", {'user': user_name}) }}">Exit</a>
-        </div>
-    </div>
-</div>
+
 <div  id="cover">
     <br>
     <div id="shadow-container">
@@ -47,12 +38,10 @@
         </div>
         <div class="fill-menu">
             <ul class="menu">
-
                 <li {% if select == 'home' %} class="menu-selected" {% endif %} ><a href="{{ path('user_account', {'user' : user_name }) }} ">Home</a></li>
                 <li {% if select == 'upload' %} class="menu-selected" {% endif %} ><a href="{{ path('user_upload', {'user' : user_name }) }} ">Upload</a></li>
                 <li {% if select == 'settings' %} class="menu-selected" {% endif %} ><a href="{{ path('settings', {'user' : user_name }) }} ">Settings</a></li>
-
-                <li><a href="#">Tape</a></li>
+                <li {% if select == 'feed' %} class="menu-selected" {% endif %} ><a href="{{ path('feed') }} ">Feed</a></li>
             </ul>
         </div>
     </div>

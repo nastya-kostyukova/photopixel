@@ -5,9 +5,18 @@
     <title>{% block title %}
         {% endblock %}
     </title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
     <link rel="stylesheet" type="text/css" href="/css/{% block style_name %}{% endblock %}.css" />
 </head>
 <body>
+<div id="header">
+    <div class="wrapper clearfix">
+        <a href="/"><img src="../css/images/Y4HEAT-nFuI.png" width="220"></a>
+        <div id="exit">
+            <a href="{{ path("exit") }}">Exit</a>
+        </div>
+    </div>
+</div>
     {% block body %}
     {% endblock %}
 </body>

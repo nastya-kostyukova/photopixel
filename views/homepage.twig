@@ -1,11 +1,11 @@
-{% extends 'template.twig' %}
-
-{% block style_name %}style-welcome
-{% endblock %}
-{% block title %}
-    Welcome to Photopixels
-{% endblock %}
-
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+<title>    Welcome to Photopixels</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style-welcome.css" />
+</head>
 {% block body %}
     <div class="container-text">
         <div class="welcome-header-text">
@@ -44,3 +44,4 @@
         {{ message_register }}
     </div>
 {% endblock %}
+</html>
