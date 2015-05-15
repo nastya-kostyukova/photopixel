@@ -34,7 +34,6 @@
     width: 35%;
 }
 
-
 html, body
 {
     height: 90%;
@@ -63,27 +62,7 @@ body
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
-    -webkit-box-shadow:
-    0 0 2px rgba(0, 0, 0, 0.2),
-    0 1px 1px rgba(0, 0, 0, .2),
-    0 3px 0 #fff,
-    0 4px 0 rgba(0, 0, 0, .2),
-    0 6px 0 #fff,
-    0 7px 0 rgba(0, 0, 0, .2);
-    -moz-box-shadow:
-    0 0 2px rgba(0, 0, 0, 0.2),
-    1px 1px   0 rgba(0,   0,   0,   .1),
-    3px 3px   0 rgba(255, 255, 255, 1),
-    4px 4px   0 rgba(0,   0,   0,   .1),
-    6px 6px   0 rgba(255, 255, 255, 1),
-    7px 7px   0 rgba(0,   0,   0,   .1);
-    box-shadow:
-    0 0 2px rgba(0, 0, 0, 0.2),
-    0 1px 1px rgba(0, 0, 0, .2),
-    0 3px 0 #fff,
-    0 4px 0 rgba(0, 0, 0, .2),
-    0 6px 0 #fff,
-    0 7px 0 rgba(0, 0, 0, .2);
+
 }
 
 #login
@@ -113,7 +92,6 @@ body
     content: '';
     position: absolute;
     z-index: -1;
-    border: 1px dashed #ccc;
     top: 5px;
     bottom: 5px;
     left: 5px;
@@ -152,7 +130,6 @@ fieldset
 
 #inputs input
 {
-    /*background: #f1f1f1 url(images/login-sprite.png) no-repeat;*/
     padding: 15px 15px 15px 30px;
     margin: 0 0 10px 0;
     width: 353px; /* 353 + 2 + 45 = 400 */
@@ -178,11 +155,7 @@ fieldset
 #inputs input:focus
 {
     background-color: #fff;
-    border-color: #e8c291;
-    outline: none;
-    -moz-box-shadow: 0 0 0 1px #e8c291 inset;
-    -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
-    box-shadow: 0 0 0 1px #e8c291 inset;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 0px 8px rgba(82, 168, 236, 0.6)
 }
 
 /*--------------------*/

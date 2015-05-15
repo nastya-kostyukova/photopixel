@@ -3,10 +3,18 @@
 {% block content %}
 
     {% if flag_no_image  == 'TRUE'%}
+
         Not uploaded any photo :(
     {% else %}
         {%  for image in images %}
-            <div class="content-img"><img src="{{ image }}" width="400"></div>
+
+                <div class="content-img"><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></div>
+            {% if user_check_flag == 'FALSE' %}
+                <form action="delete_image" id="delete-image" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="login" value="{{ image.url }}">
+                    <a href="{{ path('delete_image', {'user': image.login, 'image' : image.url}) }}"><img src="/css/delete_remove_6735.png" width="20"></a>
+                </form>
+            {%  endif %}
         {% endfor %}
     {% endif %}
 

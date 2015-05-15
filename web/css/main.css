@@ -1,4 +1,7 @@
-
+body{
+    margin: 0;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
 /* HEADER */
 #header{
     width: 100%;
@@ -8,7 +11,7 @@
 }
 
 .wrapper {
-    width: 960px;
+    width: 1400px;
     margin: 0 auto;
 }
 
@@ -19,6 +22,39 @@
     height:1%;
     line-height:0;
     visibility:hidden;
+}
+
+#head-img {
+    float: left;
+}
+
+.head-menu {
+    width: 500px;
+    font-weight: bold;
+    height: 30px;
+    list-style: none;
+    padding: 0;
+    float: left;
+    color: #efefef;
+}
+
+.head-menu li {
+    float: left;
+    margin: 0 30px;
+}
+
+.head-menu li:first-child {
+    margin-left: 15%;
+}
+
+.head-menu li a {
+    color: #efefef;
+    line-height: 30px;
+    padding: 0;
+    text-decoration: none;
+}
+.head-menu li a:hover, .head-menu li.menu-selected a {
+    color: #295C95;
 }
 
 #exit{
@@ -43,6 +79,8 @@
 #exit a{
     text-decoration: none;
     color: #efefef;
+    width:100px;
+    line-height: 30px;
     text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
     -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
@@ -50,7 +88,17 @@
 }
 
 #exit a:hover{
-    color: #2196E9;
+    color: #295C95;
+    width:100px;
+    line-height: 30px;
+}
+
+#head-about{
+    background: url("textured_paper.png") repeat scroll 0 0 transparent;
+    float: left;
+    line-height: 70px;
+    width: 100%;
+    text-align: center;
 }
 
 

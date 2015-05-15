@@ -1,26 +1,68 @@
 {% extends 'template.twig' %}
 
 {% block title %}
-    {{ user_name }} Photo with Photopixels
+    {{ userSession }} | Photo with Photopixels
 {% endblock %}
 
 {% block style_name %}style-tape
 {% endblock %}
 {% block body %}
+    <div class="border-content">
     {% for post in posts %}
     <div id="content">
         <div id="post">
-            <div id="avatar"><img src="background1.jpg" width="100"></div>
-            <div id="user-name">{{ post.login }}</div>
-            <div id="description">{{ post.description }} </div>
-            <div id="photo-post"><img src="upload/{{ post.login }}/{{ post.url }}" width="800"> </div>
-            <div id="date-and-comments">
-                 {{ post.published_date }}  |  <a href="">   Comments</a>
-            </div>
-            <div id="likes">
-                <a href="">likes</a>
-            </div>
+            <form action="feed" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="login" value="{{ post.login }}">
+                <input type="hidden" name="url" value="{{ post.url }}">
+                <div id="avatar"><img src="upload/{{ post.login }}/avatar" width="150"></div>
+                <div id="user-name">{{ post.login }}</div>
+                 <div id="description">{{ post.description }} </div>
+                <div id="photo-post"><img src="upload/{{ post.login }}/{{ post.url }}" width="650"> </div>
+                <div id="date">
+                    {{ post.published_date }}
+                </div>
+                <div id="likes">
+                        {{ post.count_likes }}
+                        {% if post.image_is_liked == 'TRUE' %}
+                            <input type="submit" id="liked" value="" name="submit">
+                        {% else %}
+                            <input type="submit" id="like" value="" name="submit">
+                        {% endif %}
+                </div>
+                <div class="border-comments">
+                    <div id="comments">
+                        <table width="100%">
+                        {% for comment in post.comments %}
+                            <tr>
+                                <td width="20%"><img src="upload/{{ comment.login }}/avatar" width="100"></td>
+                                <td>
+                                    <table>
+                                        <tr><div id="user-name-comment">{{ comment.login }}</div></tr>
+                                        <tr><div id="comment">{{ comment.comment| raw }}</div></tr>
+                                        <tr><div id="date-comment">{{ comment.date }}</div></tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="content-line"></div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                    </table>
+                    </div>
+                    <div id="comment-block">
+                        <div id="avatar"><img src="upload/{{ userSession }}/avatar" width="150"></div>
+                        <textarea  name="comment" id="comment-input" placeholder="Comment..."></textarea>
+                        <input type="submit" id="send" value="send" name="submit">
+                    </div>
+                </div>
+            </form>
         </div>
+        <div id="content-line"></div>
     </div>
     {% endfor %}
+    </div>
 {% endblock %}

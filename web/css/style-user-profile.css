@@ -1,16 +1,13 @@
 body{
     margin: 0;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
-    font-weight: bold;
-    /* width: 1600px;
-    /* background: url(background.jpg);*/
 }
-
 
 #navigation {
     display: inline-block;
     height: 30px;
     list-style: none;
+    font-weight: bold;
     margin: 0 10px;
     padding: 0;
     width: 100%;
@@ -35,7 +32,6 @@ body{
     color: #295C95;
 }
 
-/* CONTENT-INFO */
 #cover{
     width:100%;
     background: url(background.jpg);
@@ -49,7 +45,7 @@ body{
     width: 100%;
     height: 220px;
     margin-top: 160px;
-    background: -moz-linear-gradient(center top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;
+    background: -moz-linear-gradient(top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;
 }
 
 #cover-backgroud{
@@ -71,6 +67,7 @@ body{
     float: left;
     margin-top: 3%;
     margin-right: 3%;
+    box-shadow: 0px 0px 3px 0px;
     overflow: hidden;
 }
 
@@ -89,11 +86,11 @@ body{
 .fill-menu{
     position: absolute;
     width:100%;
-    /*background-color: rgba(0, 0, 0, 0.4);*/
     vertical-align: middle;
 }
 
 .menu{
+    font-weight: bold;
     height: 30px;
     list-style: none;
     margin: 0;
@@ -122,15 +119,18 @@ body{
 /**  CONTENT **/
 .content{
     margin-left: 11.5%;
-    margin-right: 1%;
     margin-top: 7%;
+    margin-bottom: 29%;
+
 }
 
 .content-img{
     height: 250px;
     width: 250px;
     float: left;
-    margin: 1%;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    margin-top: 1%;
     overflow: hidden;
 }
 
@@ -142,12 +142,11 @@ body{
     margin-top: 10%;
     margin-left: 18%;
     width: 100px;
-    height: 25px;
     text-align: center;
+    height: 30px;
     /*background-color: #666666;*/
     font-weight: normal;
-    border-radius: 8%;
-
+    border-radius: 6px;
     text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
     -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
@@ -159,33 +158,141 @@ body{
 
 #follow{
     background-color: #1A497E;
-    background-image: linear-gradient(top, #2196E9, #1A497E);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#2196E9), to(#1A497E));
-    background-image: -webkit-linear-gradient(top, #2196E9, #1A497E);
-    background-image: -moz-linear-gradient(top, #2196E9, #1A497E);
-    background-image: -ms-linear-gradient(top, #2196E9, #1A497E);
-    background-image: -o-linear-gradient(top, #2196E9, #1A497E);
-    background-image: linear-gradient(top, #2196E9, #1A497E);
+    background-image: linear-gradient(top, #208FDE, #28609F);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#208FDE), to(#28609F));
+    background-image: -webkit-linear-gradient(top, #208FDE, #28609F);
+    background-image: -moz-linear-gradient(top , #208FDE, #28609F);
+    background-image: -ms-linear-gradient(top, #208FDE, #28609F);
+    background-image: -o-linear-gradient(top, #208FDE, #28609F);
+    background-image: linear-gradient(top, #208FDE, #28609F);
 
     border-color: #1A497E #1A497E #0C2B4D;
+    line-height: 25px;
+    width: 100px;
+
+    vertical-align: middle;
+    font: bold 15px Arial, Helvetica;
+}
+
+#follow:hover{
+    background-color: #1A497E;
+    background-image: linear-gradient(top, #28609F, #208FDE);
+    background-image: -moz-linear-gradient(top , #28609F, #208FDE);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#28609F), to(#208FDE));
+    background-image: -webkit-linear-gradient(top, #28609F, #208FDE);
+    background-image: -moz-linear-gradient(top , #28609F, #208FDE);
+    background-image: -ms-linear-gradient(top, #28609F, #208FDE);
+    background-image: -o-linear-gradient(top, #28609F, #208FDE);
+    background-image: linear-gradient(top, #28609F, #208FDE);
 }
 
 #followed{
-    background-image: linear-gradient(top, #C3BEBE, #666363);
     background-color: #878080;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#C3BEBE), to(#666363));
-    background-image: -webkit-linear-gradient(top, #C3BEBE, #666363);
-    background-image: -moz-linear-gradient(top, #C3BEBE, #666363);
-    background-image: -ms-linear-gradient(top, #C3BEBE, #666363);
-    background-image: -o-linear-gradient(top, #C3BEBE, #666363);
-    background-image: linear-gradient(top, #C3BEBE, #666363);
-
+    background-image: linear-gradient(top, #A89F9F, #666363);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#A89F9F), to(#666363));
+    background-image: -webkit-linear-gradient(top, #A89F9F, #666363);
+    background-image: -moz-linear-gradient(top, #A89F9F, #666363);
+    background-image: -ms-linear-gradient(top, #A89F9F, #666363);
+    background-image: -o-linear-gradient(top, #A89F9F, #666363);
+    background-image: linear-gradient(top, #A89F9F, #666363);
+    vertical-align: middle;
     border-color: #878080 #878080 #595454;
-}
 
+    line-height: 25px;
+    padding: 0;
+    width: 100px;
+
+    font: bold 15px Arial, Helvetica;
+}
+#followed:hover{
+    background-color: #878080;
+    background-image: linear-gradient(top, #666363, #A89F9F);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#666363), to(#A89F9F));
+    background-image: -webkit-linear-gradient(top, #666363, #A89F9F);
+    background-image: -moz-linear-gradient(top, #666363, #A89F9F);
+    background-image: -ms-linear-gradient(top, #666363, #A89F9F);
+    background-image: -o-linear-gradient(top, #666363, #A89F9F);
+    background-image: linear-gradient(top, #666363, #A89F9F);
+}
 #followed a, #follow a{
     vertical-align: middle;
     text-decoration: none;
     color: #efefef;
 }
+#followed a {
+    color: rgba(0, 0, 0, 0.6);
+}
+#commnet-input{
+    width: 200px;
+}
+#follow-area{
+    height: 100%;
+    width: 50%;
+    margin-bottom: 3%;
+    border:double 3px #ACD7EC;
+    background-color: #F7FBFF;
+    padding: 3%;
+}
 
+#earch-follow-area{
+    float:left;
+    margin-bottom: 3%;
+}
+#avatar-follow{
+    height: 100px;
+    width: 100px;
+    float: left;
+    margin-top: 1%;
+    margin-right: 3%;
+    box-shadow: 0px 0px 3px 0px;
+    overflow: hidden;
+}
+#avatar-follow img{
+    margin-left: -30%;
+}
+#user-name-follow{
+    float: right;
+    margin-right: 67%;
+    color: #295C95;
+}
+
+#user-name{
+    color: #295C95;
+    font-size: 15pt;
+}
+#count-follow{
+    width: 300px;
+    line-height: 35px;
+    border-radius: 3px;
+
+    vertical-align: middle;
+    float: left;
+    margin-top: 3%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, .2);
+    color: rgba(0, 0, 0, 0.7);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+}
+#count-follow-users{
+    width: 300px;
+    line-height: 35px;
+    border-radius: 3px;
+    vertical-align: middle;
+    float: left;
+    margin-left: 2%;
+    margin-top: 3%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, .2);
+    color: rgba(0, 0, 0, 0.7);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+}
+
+#delete-image{
+    width: 10px;
+    float: left;
+    margin-right: 1%;
+}
+#delete{
+    background-image: url(delete_remove_6735.png);
+    background-size: 20px;
+}

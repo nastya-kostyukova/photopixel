@@ -1,7 +1,7 @@
 {% extends 'template.twig' %}
 
 {% block title %}
-    {{ user }}| Photo with Photopixels
+    {{ userSession }}| Photo with Photopixels
 {% endblock %}
 
 {% block style_name %}style-user-profile
@@ -14,23 +14,30 @@
     <div id="shadow-container">
         <div id="user-profile">
             <div id="user-profile-img">
-                <img src="background1.jpg" width="150">
+                <img src="/upload/{{ userPage }}/avatar" width="200">
             </div>
             <div id="user-profile-name">
-                {{ user_name }}
+
+                <div id="user-name">{{ userPage }}</div>
+                <div id="count-follow">
+                    Photos: {{ count_images }}
+                    Followers: {{ count_follower }}
+                    Following: {{ count_following }}
+                </div>
                 {% if user_check_flag == 'TRUE' %}
                     {% if user_is_followed == 'FALSE' %}
                     <div id="follow">
-                        <a href="{{ path("follow_user", {'user': user_name}) }}">Follow</a>
+                        <a href="{{ path("follow_user", {'user': userPage}) }}">Follow</a>
                     </div>
+                    {% endif %}
+                    {% if user_is_followed == 'TRUE'%}
+                        <div id="followed">
+                            <a href="{{ path("followed_user", {'user': userPage}) }}">Followed</a>
+                        </div>
                     {% endif %}
                 {% endif %}
 
-                {% if user_is_followed == 'TRUE'%}
-                    <div id="followed">
-                        <a href="{{ path("followed_user", {'user': user_name}) }}">Followed</a>
-                    </div>
-                {% endif %}
+
             </div>
             <div id="user-profile-content">
                 <!-- user_readers -->
@@ -38,16 +45,17 @@
         </div>
         <div class="fill-menu">
             <ul class="menu">
-                <li {% if select == 'home' %} class="menu-selected" {% endif %} ><a href="{{ path('user_account', {'user' : user_name }) }} ">Home</a></li>
-                <li {% if select == 'upload' %} class="menu-selected" {% endif %} ><a href="{{ path('user_upload', {'user' : user_name }) }} ">Upload</a></li>
-                <li {% if select == 'settings' %} class="menu-selected" {% endif %} ><a href="{{ path('settings', {'user' : user_name }) }} ">Settings</a></li>
-                <li {% if select == 'feed' %} class="menu-selected" {% endif %} ><a href="{{ path('feed') }} ">Feed</a></li>
+                <li {% if select == 'followers' %} class="menu-selected" {% endif %} ><a href="{{ path('followers', {'user' : userPage }) }} ">Followers</a></li>
+                <li {% if select == 'following' %} class="menu-selected" {% endif %} ><a href="{{ path('following', {'user' : userPage }) }} ">Following</a></li>
+                <li {% if select == 'favorits' %} class="menu-selected" {% endif %} ><a href="{{ path('following', {'user' : userPage }) }} ">Favorits</a></li>
             </ul>
         </div>
     </div>
 </div>
+
 <div class="content">
     {% block content %}
     {% endblock %}
 </div>
+
 {% endblock %}

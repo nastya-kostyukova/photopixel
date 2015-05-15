@@ -24,7 +24,8 @@
         "guzzle/guzzle": "3.0.*",
         "symfony/dependency-injection": "2.1.*",
         "symfony/yaml": "2.1.*",
-        "imagine/imagine": "0.5.x-dev"
+        "imagine/imagine": "0.5.x-dev",
+        "phpunit/phpunit": "4.6.6"
     },
     "minimum-stability": "dev",
     "config": {

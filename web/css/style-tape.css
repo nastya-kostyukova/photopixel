@@ -1,38 +1,56 @@
 body{
-    background-color: #47638D;
     margin: 0;
+    font-family: "Trebuchet MS",Helvetica,sans-serif;
+    background: url(textured_paper.png);
 }
 
-#post{
-    background-color: #efefef;
+#post {
     border-radius: 1%;
     height: auto;
     padding: 2%;
+    margin-bottom: 5%;
 }
 
-#content{
-    width:60%;
-    margin:auto;
-    margin-top: 3%;
-}
-
-#avatar{
-    margin-left: 5%;
-    margin-right: 3%;
-    margin-top:3%;
+.border-content {
     float:left;
+    height: 100%;
+    width:50%;
+    margin-left:25%;
+    margin-top: 1.5%;
+    border:double 2px #cad8e6;
+    color: black;
+}
+
+#content {
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
+    background-color: #f7f7f9;
+}
+
+#content-line {
+    margin:auto;
+    width: 95%;
+    border-bottom:double 2px #cad8e6;
+}
+
+#avatar {
+    margin-right: 3%;
+    float:left;
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
 }
 
 #user-name{
-    margin-top:3%;
     margin-bottom: 2%;
-    font-family: "Comic Sans MS", cursive, sans-serif;
     font-size: 15pt;
+    color: #204975;
 }
 
 #description{
     font-family: "Arial Black", Gadget, sans-serif;
-    color: #4B4A4A;
+    font-size: 11pt;
 }
 
 #photo-post{
@@ -41,16 +59,107 @@ body{
 
 #likes{
     float:right;
-    margin-right: 27%;
+    margin-right: 7%;
     margin-top: 0.5%;
     font-size: 10pt;
     margin-bottom:2%;
+    color: #595959;
 }
 
-#date-and-comments{
+#liked{
+    background-image: url(like_gray.png);
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
+    border: 0 none;
+}
+
+#like{
+    background-image: url(like.png);
+    background-size: 22px;
+    width: 22px;
+    height: 22px;
+    border: 0 none;
+}
+#date{
     float:left;
     margin-top: 0.5%;
-    margin-left:21%;
+    margin-left:17%;
+    font-size: 10pt;
+    color: #595959;
+}
+#comment-block{
+    background: none repeat scroll 0% 0% #F1F1F1;
+    padding: 6px;
+    width: 590px;
+}
+#comment-input{
+    width: 454px;
+    border-radius: 0;
+    line-height: 35px;
+}
+
+#send{
+    margin-top: 2%;
+    background-color: #1A497E;
+    background-image: linear-gradient(top, #208FDE, #28609F);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#208FDE), to(#28609F));
+    background-image: -webkit-linear-gradient(top, #208FDE, #28609F);
+    background-image: -moz-linear-gradient(top , #208FDE, #28609F);
+    background-image: -ms-linear-gradient(top, #208FDE, #28609F);
+    background-image: -o-linear-gradient(top, #208FDE, #28609F);
+    background-image: linear-gradient(top, #208FDE, #28609F);
+
+    border-color: #1A497E #1A497E #0C2B4D;
+    line-height: 25px;
+    width: 100px;
+
+    vertical-align: middle;
+    font: bold 15px Arial, Helvetica;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    color: #efefef;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+#send a{
+    vertical-align: middle;
+    text-decoration: none;
+    color: #efefef;
+}
+
+#comment{
+    margin-top: 2%;
+    font-size: 12pt;
+    color: #595959;
+}
+
+#user-name-comment{
+    font-size: 14pt;
+    color: #204975;
+}
+
+.border-comments {
+    padding: 2%;
+    height: 100%;
+    width:73%;
+    margin-left:15%;
+    margin-top: 4%;
+    border:double 2px #cad8e6;
+    color: black;
+}
+
+#comment-line{
+    border-bottom:double 2px #cad8e6;
+    margin-top: 5%;
+    width: 100%;
+}
+
+#date-comment{
     font-size: 10pt;
     color: #595959;
 }

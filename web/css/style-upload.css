@@ -1,21 +1,25 @@
 body{
-    background-color: #47638D;
     margin: 0;
-    color: #0044cc;
+    font-family: "Trebuchet MS",Helvetica,sans-serif;
+    font-weight: bold;
+    background: url(textured_paper.png);
+
 }
 
 #inputs{
-    width:30%;
+    width:40%;
     float:right;
 }
-
+#title-descr {
+    margin-top: 10%;
+}
 #title-input, #description-input
 {
-    margin-top: 3%;
+    margin-top:1.5%;
     margin-bottom: 3%;
     /*background: #f1f1f1 url(images/login-sprite.png) no-repeat;*/
     padding: 15px 15px 15px 30px;
-    width: 353px; /* 353 + 2 + 45 = 400 */
+    width: 443px; /* 353 + 2 + 45 = 400 */
     border: 1px solid #ccc;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -26,29 +30,30 @@ body{
 }
 
 #description-input{
-    height: 515px;
+    height: 382px;
 }
 
 #photo{
-    width: 64%;
+    width: 54%;
     float:left;
     height: 730px;
     vertical-align: middle;
 }
 
 #upload-area{
-    margin-left:30%;
-    margin-top: 35%;
+    padding-top: 10%;
+    padding-left: 6%;
 }
 
 #upload{
     min-width: 100px;
-    height: 40px;
+    height: 35px;
     text-align: center;
     line-height: 38px;
     font-size: 16px;
-
-    margin-top: 2%;
+    float:right;
+    margin-right: 6%;
+    margin-top: 1%;
     width: 100px;
 
     background-color: #1A497E;
@@ -90,8 +95,17 @@ body{
     width:70%;
     margin:auto;
     margin-top: 3%;
-    background-color: #efefef;
-    border-radius: 1%;
+    /*background-color: #F7FBFF;*/
+    background-color: #f7f7f9;
+    border:double 2px #cad8e6;
+    /*border:double 3px #ACD7EC;
+    /*color: #6A76B0;*/
+    color: #204975;
     height: 750px;
     padding: 2%;
+}
+#photo-img {
+    margin-top: 9%;
+    margin-left: 1%;
+    text-align: center;
 }

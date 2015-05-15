@@ -1,0 +1,30 @@
+body{
+    background: #e0f3fa; /* Old browsers */
+    background: -moz-linear-gradient(top, #e0f3fa 0%, #d8f0fc 50%, #b8e2f6 51%, #b6dffd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0f3fa), color-stop(50%,#d8f0fc), color-stop(51%,#b8e2f6), color-stop(100%,#b6dffd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* W3C */
+    /*background: url(textured_paper.png);*/
+}
+#content {
+    width:70%;
+    margin:auto;
+    margin-top: 3%;
+    background-color: #F7FBFF;
+    border:double 3px #ACD7EC;
+    color: #6A76B0;
+    height: 750px;
+    padding: 2%;
+}
+
+#content-line {
+    float:left;
+    height: 100%;
+    width:50%;
+    margin-left:25%;
+    margin-top: 1.5%;
+    /*border:double 2px #cad8e6;*/
+    color: black;
+}

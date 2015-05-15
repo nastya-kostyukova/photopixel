@@ -86,8 +86,98 @@ class UserRepository extends BaseRepository implements UserProviderInterface
         return array('status' => 'ok', 'message' => 'You are registered!');
 
     }
-    public function savePassword($login, $password, $password_again){
+    public function uploadAvatar($user, $dir)
+    {
+        $target_dir = $dir.$user;
+        mkdir($target_dir, 0777);
+        $message = '';
+        if (!file_exists($target_dir))
+        {
+            if (!mkdir($target_dir, 0777))
+                $message.= 'Error.Cannot make directory  '.$target_dir."   ";
+            $uploadOk = 0;
+        }
+        $target_file = $target_dir . "/".basename($_FILES["fileToUpload"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+            if ($check !== false) {
+                $message = "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                $message=  "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+
+        // Check file size
+        if ($_FILES["fileToUpload"]["size"] > 500000) {
+            $message .= "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+            $message .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        $url = '';
+        if ($uploadOk != 0)
+        {
+            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file))
+            {
+                $url = basename( $_FILES["fileToUpload"]["name"]);
+                $message .= "The file ". $url. " has been uploaded.";
+                rename($target_file, $target_dir.'/avatar');
+                $url = 'avatar';
+            } else {
+                $message .= "Sorry, there was an error uploading your file.";
+            }
+        }
+        return array ('message' => $message, 'url' => $url);
+    }
+
+    public function countFollower($id_following)
+    {
+        $sql = "SELECT id_follower FROM followers WHERE id_following=?";
+        $post = $this->conn->fetchAll($sql, array((int) $id_following));
+        $count = count($post);
+        return $count;
+    }
+
+    public  function countFollowing($id_follower)
+    {
+        $sql = "SELECT id_following FROM followers WHERE id_follower=?";
+        $post = $this->conn->fetchAll($sql, array((int) $id_follower));
+        $count = count($post);
+        return $count;
+    }
+    public  function  countImages($user)
+    {
+        $sql = "SELECT i.id FROM images i INNER JOIN users u ON (u.id = i.id_author) WHERE u.login=?";
+        $post = $this->conn->fetchAll($sql, array((string) $user));
+        $count = count($post);
+        return $count;
+    }
+    public function userIsFollowed($user, $userSession, $id_following)
+    {
+        if  ($user === $userSession['login']) {
+            $user_is_followed = '';
+        }else {
+            $id_follower = $userSession['id'];
+            $sql= "SELECT id_follower, id_following FROM followers WHERE id_follower=? AND id_following=?";
+            $post = $this->conn->fetchAssoc($sql, array((int) $id_follower, (int) $id_following));
+            if (isset($post['id_follower'])){
+                $user_is_followed = 'TRUE';
+            }else{
+                $user_is_followed = 'FALSE';
+            }
+        }
+        return $user_is_followed;
     }
     /**
      * Turns an array of data into a User object

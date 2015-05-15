@@ -1,13 +1,28 @@
-{% extends 'account.twig' %}
+{% extends 'template.twig' %}
 
-{% block content %}
-    <div id="login-reg">
+{% block title %}
+    {{ userSession }} | Photo with Photopixels
+{% endblock %}
+
+{% block style_name %}style-settings
+{% endblock %}
+
+{% block body %}
+    <div id="content">
+        <div id="content-line">
+        <form action="{{ path("avatar_upload", {'user' : userSession}) }}" method="post" enctype="multipart/form-data">
+            Select image to upload:
+            <input type="file" name="fileToUpload" placeholder="Browse photo" id="fileToUpload">
+            <input type="submit" id="upload" value="Upload" name="submit">
+            {{ message }}
+        </form>
+
         <form method="post" target="/" action="/register">
             <fieldset id="inputs">
                 <input type="text" name="forename" id="forename-input" placeholder="Forename" autofocus required>
                 <input type="text" name="surname" id="surname-input" placeholder="Surname" required>
-                <select size="3" multiple name="gender[]">
-                    <option disabled>Gender</option>
+                <select name="gender[]">
+                    <option>   Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
@@ -22,5 +37,6 @@
                 <input type="submit" id ="submit" value="Enter">
             </fieldset>
         </form>
+        </div>
     </div>
 {% endblock %}

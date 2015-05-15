@@ -1,0 +1,18 @@
+{% extends 'account.twig' %}
+
+{% block content %}
+    <div id="follow-area">
+    {% for user_f in users %}
+        <div id="earch-follow-area">
+                <div id="avatar-follow"><a href="/{{ user_f.login }}"> <img src="/upload/{{ user_f.login }}/avatar" width="160"></a></div>
+                <div id="user-name-follow">{{ user_f.login }}</div>
+            <div id="count-follow-users">
+                Photos: {{ user_f.count_images_user }}
+                Followers: {{ user_f.count_follower_user }}
+                Following: {{ user_f.count_following_user }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="wrapper clearfix"></div>
+{% endblock %}
