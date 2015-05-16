@@ -86,7 +86,7 @@ $app->get('/feed', function(\Silex\Application $app) use ($app){
         return $app['twig']->redirect('/');
     }
     $id_follower = $userSession['id'];
-    $images = $app['image']->loadFeed($id_follower);
+    $images = $app['social']->loadFeed($id_follower);
 
     return $app['twig']->render('tape.twig', array(
         'userSession'=> $userSession['login'],
@@ -106,12 +106,12 @@ $app->post('/feed', function(Request $request) use ($app) {
     $userSession = $app['session']->get('user');
 
     if ($request->get('comment')) {
-        $app['image']->saveComment($login, $url, $comment, $userSession['id']);
+        $app['social']->saveComment($login, $url, $comment, $userSession['id']);
 
     } else {
-        $app['image']->saveLike($login, $url, $userSession['id']);
+        $app['social']->saveLike($login, $url, $userSession['id']);
     }
-    $images = $app['image']->loadFeed($userSession['id']);
+    $images = $app['social']->loadFeed($userSession['id']);
     return $app['twig']->render('tape.twig', array(
         'userSession' => $userSession['login'],
         'posts' => $images,
@@ -128,7 +128,7 @@ $app->get('/{user}', function ( $user) use ($app) {
             $app->redirect('/');
         }
         $userSession = $app['session']->get('user');
-        $user_is_followed = $app['user_repository']->userIsFollowed($user, $userSession, $id_following);
+        $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_following);
 
         if ($user != $userSession['login']){
             $user_check_flag = 'TRUE';
@@ -137,9 +137,9 @@ $app->get('/{user}', function ( $user) use ($app) {
         if (isset($images['error'])){
             $flag_no_image = 'TRUE';
         } else $flag_no_image = 'FALSE';
-        $count_follower = $app['user_repository']->countFollower($id_following);
-        $count_following = $app['user_repository']->countFollowing($id_following);
-        $count_images = $app['user_repository']->countImages($user);
+        $count_follower = $app['social']->countFollower($id_following);
+        $count_following = $app['social']->countFollowing($id_following);
+        $count_images = $app['social']->countImages($user);
         return $app['twig']->render('image.twig', array(
             'userPage' => $user,
             'message' => '',
@@ -180,16 +180,16 @@ $app->get('/{user}/followers', function($user) use ($app){
     if ($user != $userSession['login']){
         $user_check_flag = 'TRUE';
     } else $user_check_flag = 'FALSE';
-    $user_is_followed = $app['user_repository']->userIsFollowed($user, $userSession, $id_following);
-    $count_follower = $app['user_repository']->countFollower($id_following['id']);
-    $count_following = $app['user_repository']->countFollowing($id_following['id']);
-    $count_images = $app['user_repository']->countImages($user);
+    $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_following['id']);
+    $count_follower = $app['social']->countFollower($id_following['id']);
+    $count_following = $app['social']->countFollowing($id_following['id']);
+    $count_images = $app['social']->countImages($user);
 
 
     foreach($usersFollower as &$value) {
-        $value['count_follower_user'] = $app['user_repository']->countFollower($value['id']);
-        $value['count_following_user'] = $app['user_repository']->countFollowing($value['id']);
-        $value['count_images_user'] = $app['user_repository']->countImages($user);
+        $value['count_follower_user'] = $app['social']->countFollower($value['id']);
+        $value['count_following_user'] = $app['social']->countFollowing($value['id']);
+        $value['count_images_user'] = $app['social']->countImages($value['login']);
     }
     return $app['twig']->render('follow.twig', array(
         'users' => $usersFollower,
@@ -225,15 +225,15 @@ $app->get('/{user}/following', function($user) use ($app){
     if ($user != $userSession['login']){
         $user_check_flag = 'TRUE';
     } else $user_check_flag = 'FALSE';
-    $user_is_followed = $app['user_repository']->userIsFollowed($user, $userSession, $id_following);
-    $count_follower = $app['user_repository']->countFollower($id_follower['id']);
-    $count_following = $app['user_repository']->countFollowing($id_follower['id']);
-    $count_images = $app['user_repository']->countImages($user);
+    $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_follower['id']);
+    $count_follower = $app['social']->countFollower($id_follower['id']);
+    $count_following = $app['social']->countFollowing($id_follower['id']);
+    $count_images = $app['social']->countImages($user);
 
     foreach($usersFollowing as &$value) {
-        $value['count_follower_user'] = $app['user_repository']->countFollower($value['id']);
-        $value['count_following_user'] = $app['user_repository']->countFollowing($value['id']);
-        $value['count_images_user'] = $app['user_repository']->countImages($value['login']);
+        $value['count_follower_user'] = $app['social']->countFollower($value['id']);
+        $value['count_following_user'] = $app['social']->countFollowing($value['id']);
+        $value['count_images_user'] = $app['social']->countImages($value['login']);
     }
 
     return $app['twig']->render('follow.twig', array(
@@ -286,15 +286,14 @@ $app->get('/{user}/upload', function(\Silex\Application $app) use ($app) {
 })->bind('user_upload');
 
 $app->post('/{user}/upload',  function(Request $request, $user) use ($app) {
-    $image = new Image($app['db']);
-    $result = $image->uploadImage($user,  __DIR__."/../web/upload/");
+    $result = $app['upload']->uploadImage($user,  __DIR__."/../web/upload/");
     $userSession = $app['session']->get('user');
     $title = $request->get('title');
     $description = $request->get('description');
 
     #$app['filters']->filter( __DIR__."/../web/upload/".$result['url'], 'my_thumb');
 
-    $image->saveImageInDB($user, $result['url'], $title, $description);
+    $app['image']->saveImageInDB($user, $result['url'], $title, $description);
     return $app['twig']->render('upload.twig', array(
         'userSession' => $userSession['login'],
         'message' => $result['message'],
@@ -311,9 +310,9 @@ $app->get('/{user}/settings', function ($user) use ($app){
 })->bind('settings');
 
 $app->post('/{user}/settings',  function(Request $request, $user) use ($app) {
-    $result = $app['user_repository']->uploadAvatar($user,  __DIR__."/../web/upload/");
+    $result = $app['upload']->uploadAvatar($user,  __DIR__."/../web/upload/");
     $userSession= $app['session']->get('user');
-    $app['user_repository']->saveAvatarInDB($user, $result['url']);
+    $app['image']->saveAvatarInDB($user, $result['url']);
 
     return $app['twig']->render('settings.twig', array(
         'userSession' => $userSession['login'],
@@ -323,8 +322,10 @@ $app->post('/{user}/settings',  function(Request $request, $user) use ($app) {
 })->bind('avatar_upload');
 
 $app->get('/{user}/{image}', function ($user, $image) use ($app) {
+    $userSession= $app['session']->get('user');
     $sql = "SELECT id FROM users WHERE login=?";
     $id = $app['db']->fetchAssoc($sql, array((string) $user));
-    $app['db']->delete('images', array('url' => $image, 'id_author' => $id['id']));
+    if ($id['id'] === $userSession['id'])
+        $app['db']->delete('images', array('url' => $image, 'id_author' => $id['id']));
     return $app->redirect('/'.$user);
 })->bind('delete_image');

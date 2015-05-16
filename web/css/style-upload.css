@@ -17,7 +17,6 @@ body{
 {
     margin-top:1.5%;
     margin-bottom: 3%;
-    /*background: #f1f1f1 url(images/login-sprite.png) no-repeat;*/
     padding: 15px 15px 15px 30px;
     width: 443px; /* 353 + 2 + 45 = 400 */
     border: 1px solid #ccc;
@@ -95,7 +94,6 @@ body{
     width:70%;
     margin:auto;
     margin-top: 3%;
-    /*background-color: #F7FBFF;*/
     background-color: #f7f7f9;
     border:double 2px #cad8e6;
     /*border:double 3px #ACD7EC;

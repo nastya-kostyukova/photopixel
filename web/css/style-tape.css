@@ -46,6 +46,12 @@ body{
     margin-bottom: 2%;
     font-size: 15pt;
     color: #204975;
+    text-decoration: none;
+}
+
+#user-name a{
+    color: #204975;
+    text-decoration: none;
 }
 
 #description{
@@ -141,6 +147,11 @@ body{
 #user-name-comment{
     font-size: 14pt;
     color: #204975;
+    text-decoration: none;
+}
+
+#user-name-comment a{
+    text-decoration: none;
 }
 
 .border-comments {

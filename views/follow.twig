@@ -5,7 +5,7 @@
     {% for user_f in users %}
         <div id="earch-follow-area">
                 <div id="avatar-follow"><a href="/{{ user_f.login }}"> <img src="/upload/{{ user_f.login }}/avatar" width="160"></a></div>
-                <div id="user-name-follow">{{ user_f.login }}</div>
+                <div id="user-name-follow"><a href="/{{ user_f.login }}"> {{ user_f.login }}</a></div>
             <div id="count-follow-users">
                 Photos: {{ user_f.count_images_user }}
                 Followers: {{ user_f.count_follower_user }}

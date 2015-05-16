@@ -28,6 +28,14 @@ $app['image'] = $app->share(function($app){
     return new \RaptorStore\Image($app['db']);
 });
 
+$app['upload'] = $app->share(function($app){
+    return new \RaptorStore\Upload($app['db']);
+});
+
+$app['social'] = $app->share(function($app){
+    return new \RaptorStore\Social($app['db']);
+});
+
 $app['user_repository'] = $app->share(function($app) {
     // create a dummy user to get the encoder
     $user = new User();
@@ -54,7 +62,6 @@ $app->register(new SessionServiceProvider());
 $app->register(new TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
-
 
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(

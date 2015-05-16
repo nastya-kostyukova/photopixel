@@ -141,44 +141,7 @@ class UserRepository extends BaseRepository implements UserProviderInterface
         return array ('message' => $message, 'url' => $url);
     }
 
-    public function countFollower($id_following)
-    {
-        $sql = "SELECT id_follower FROM followers WHERE id_following=?";
-        $post = $this->conn->fetchAll($sql, array((int) $id_following));
-        $count = count($post);
-        return $count;
-    }
 
-    public  function countFollowing($id_follower)
-    {
-        $sql = "SELECT id_following FROM followers WHERE id_follower=?";
-        $post = $this->conn->fetchAll($sql, array((int) $id_follower));
-        $count = count($post);
-        return $count;
-    }
-    public  function  countImages($user)
-    {
-        $sql = "SELECT i.id FROM images i INNER JOIN users u ON (u.id = i.id_author) WHERE u.login=?";
-        $post = $this->conn->fetchAll($sql, array((string) $user));
-        $count = count($post);
-        return $count;
-    }
-    public function userIsFollowed($user, $userSession, $id_following)
-    {
-        if  ($user === $userSession['login']) {
-            $user_is_followed = '';
-        }else {
-            $id_follower = $userSession['id'];
-            $sql= "SELECT id_follower, id_following FROM followers WHERE id_follower=? AND id_following=?";
-            $post = $this->conn->fetchAssoc($sql, array((int) $id_follower, (int) $id_following));
-            if (isset($post['id_follower'])){
-                $user_is_followed = 'TRUE';
-            }else{
-                $user_is_followed = 'FALSE';
-            }
-        }
-        return $user_is_followed;
-    }
     /**
      * Turns an array of data into a User object
      *

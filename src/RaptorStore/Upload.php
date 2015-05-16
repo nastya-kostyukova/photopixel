@@ -7,9 +7,10 @@ class Upload
     public function uploadImage($user, $dir)
     {
         $target_dir = $dir . $user;
-        mkdir($target_dir, 0777);
+
         $message = '';
         if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777);
             if (!mkdir($target_dir, 0777))
                 $message .= 'Error.Cannot make directory  ' . $target_dir . "   ";
             $uploadOk = 0;
@@ -31,7 +32,7 @@ class Upload
         }
 
         // Check file size
-        if ($_FILES["fileToUpload"]["size"] > 500000) {
+        if ($_FILES["fileToUpload"]["size"] > 500000000) {
             $message .= "Sorry, your file is too large.";
             $uploadOk = 0;
         }

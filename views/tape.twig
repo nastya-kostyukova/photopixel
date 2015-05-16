@@ -14,9 +14,10 @@
             <form action="feed" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="login" value="{{ post.login }}">
                 <input type="hidden" name="url" value="{{ post.url }}">
-                <div id="avatar"><img src="upload/{{ post.login }}/avatar" width="150"></div>
-                <div id="user-name">{{ post.login }}</div>
-                 <div id="description">{{ post.description }} </div>
+
+                <a href="/{{ post.login }}" id="avatar"><img src="upload/{{ post.login }}/avatar" width="150"></a>
+                <a href="/{{ post.login }}" id="user-name">{{ post.login }}</a>
+                <div id="description">{{ post.description }} </div>
                 <div id="photo-post"><img src="upload/{{ post.login }}/{{ post.url }}" width="650"> </div>
                 <div id="date">
                     {{ post.published_date }}
@@ -34,10 +35,10 @@
                         <table width="100%">
                         {% for comment in post.comments %}
                             <tr>
-                                <td width="20%"><img src="upload/{{ comment.login }}/avatar" width="100"></td>
+                                <td width="20%"><a href="/{{ comment.login }}"><img src="upload/{{ comment.login }}/avatar" width="100"></a></td>
                                 <td>
                                     <table>
-                                        <tr><div id="user-name-comment">{{ comment.login }}</div></tr>
+                                        <tr><a href="/{{ comment.login }}" id="user-name-comment">{{ comment.login }}</a></tr>
                                         <tr><div id="comment">{{ comment.comment| raw }}</div></tr>
                                         <tr><div id="date-comment">{{ comment.date }}</div></tr>
                                     </table>

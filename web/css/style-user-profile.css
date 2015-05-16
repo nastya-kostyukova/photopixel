@@ -232,6 +232,7 @@ body{
     border:double 3px #ACD7EC;
     background-color: #F7FBFF;
     padding: 3%;
+    float:left;
 }
 
 #earch-follow-area{

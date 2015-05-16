@@ -8,7 +8,7 @@
     {% else %}
         {%  for image in images %}
 
-                <div class="content-img"><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></div>
+                <div class="content-img"><a href="/upload/{{ image.login }}/{{ image.url }}" rel="lightbox" title="my caption"><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></a></div>
             {% if user_check_flag == 'FALSE' %}
                 <form action="delete_image" id="delete-image" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="login" value="{{ image.url }}">
