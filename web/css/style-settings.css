@@ -4,12 +4,12 @@ body{
 
 #content {
     width:70%;
-    margin:auto;
-    margin-top: 3%;
+    margin: 3% 13%;
     background-color: #f7f7f9;
     border:double 2px #cad8e6;
-    color: #6A76B0;
-    height: 750px;
+    color: #204975;
+    float:left;
+    height: 100%;
     padding: 2%;
 }
 
@@ -20,4 +20,69 @@ body{
     margin-left:25%;
     margin-top: 1.5%;
     color: black;
+}
+
+#settings {
+    width: 100%;
+    margin-top:5%;
+    float:left;
+    border-spacing: 7px 11px;
+}
+
+#inputs {
+    width: 300px;
+    height: 30px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+#description-input {
+    width: 300px;
+    height: 100px;
+    padding: 2%;
+}
+
+#columns {
+    width: 13%;
+    text-align:right;
+    vertical-align: baseline;
+}
+
+#submit {
+    background-color: #1A497E;
+    background-image: linear-gradient(top, #208FDE, #28609F);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#208FDE), to(#28609F));
+    background-image: -webkit-linear-gradient(top, #208FDE, #28609F);
+    background-image: -moz-linear-gradient(top , #208FDE, #28609F);
+    background-image: -ms-linear-gradient(top, #208FDE, #28609F);
+    background-image: -o-linear-gradient(top, #208FDE, #28609F);
+    background-image: linear-gradient(top, #208FDE, #28609F);
+
+    border-color: #1A497E #1A497E #0C2B4D;
+    line-height: 25px;
+    width: 100px;
+
+    float: right;
+    margin-right: 21%;
+    vertical-align: middle;
+    font: bold 15px Arial, Helvetica;
+    line-height: 25px;
+    color: #F9F4F4;
+}
+
+#avatar-upload-area {
+    float: left;
+    margin-left: 12%;
+}
+
+#upload-area {
+    float:right;
+    width: 40%;
+    margin-right: 6%;
+}
+#preview{
+    margin-top: 5%;
+}
+#photo-img {
+    vertical-align: middle;
 }

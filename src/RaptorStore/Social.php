@@ -57,6 +57,31 @@ class Social {
         return $res;
     }
 
+    public function saveFavorites($login, $url, $id_author)
+    {
+        $res = true;
+        $sql = "SELECT id FROM users WHERE login = ?";
+        $id_user = $this->conn->fetchAssoc($sql, array((string) $login));
+        if (!isset($id_user)) {
+            $res = false;
+        }
+        $sql = "SELECT id FROM images WHERE url = ?";
+        $id_image = $this->conn->fetchAssoc($sql, array((string) $url));
+        if (!isset($id_image)) {
+            $res = false;
+        }
+        $sql = "SELECT idfavorites FROM favorites WHERE id_image=? && id_user=? && id_author=?";
+        $post = $this->conn->fetchAll($sql, array( (int) $id_image['id'], (int) $id_user['id'], (int) $id_author));
+        if ($res) {
+            if (count($post) === 0) {
+                $this->conn->insert('likes', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
+            }
+            if (count($post) > 0)
+                $this->conn->delete('likes', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
+        }
+        return $res;
+    }
+
     public function  loadFeed($id_follower)
     {
         $sql = "SELECT u.login, u.id, i.url, i.title, i.description, i.published_date, i.id as id_image
@@ -82,19 +107,23 @@ ON (f.id_following = u.id) && (c.id_author = u.id) && (i.id = c.id_image) && (u.
             }
         }
 
-        $sql = "SELECT idlikes FROM likes WHERE id_image=? && id_user=?";
+        $sqlLike = "SELECT idlikes FROM likes WHERE id_image=? && id_user=?";
+        $sqlFavorites = "SELECT idfavorites FROM favorites WHERE id_image=? && id_user=?";
         $i = 0;
         foreach($images as &$image) {
-            $post = $this->conn->fetchAll($sql, array( (int) $image['id_image'], (int) $image['id']));
+            $post = $this->conn->fetchAll($sqlLike, array( (int) $image['id_image'], (int) $image['id']));
             $image['count_likes'] = count($post);
-            $sqlLike = "SELECT idlikes FROM likes WHERE (id_image=?) && (id_user=?) && (id_author=?)";
-            $post = $this->conn->fetchAll($sqlLike, array((int) $image['id_image'], (int) $image['id'], (int) $id_follower ));
+            $post = $this->conn->fetchAll($sqlFavorites, array( (int) $image['id_image'], (int) $image['id']));
+            $image['count_favorites'] = count($post);
+            $sqlLikes = "SELECT idlikes FROM likes WHERE (id_image=?) && (id_user=?) && (id_author=?)";
+            $post = $this->conn->fetchAll($sqlLikes, array((int) $image['id_image'], (int) $image['id'], (int) $id_follower ));
             if (count($post) !== 0)
                 $image['image_is_liked'] = 'TRUE';
             else
                 $image['image_is_liked'] = 'FALSE';
             $i++;
         }
+
         return $images;
     }
 
@@ -113,6 +142,7 @@ ON (f.id_following = u.id) && (c.id_author = u.id) && (i.id = c.id_image) && (u.
         $count = count($post);
         return $count;
     }
+
     public  function  countImages($user)
     {
         $sql = "SELECT i.id FROM images i INNER JOIN users u ON (u.id = i.id_author) WHERE u.login=?";

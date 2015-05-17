@@ -33,8 +33,8 @@
     <div id="login-reg">
         <form method="post" target="/" action="/register">
             <fieldset id="inputs">
-                <input type="text" name="login-reg" id="login-input" placeholder="Login" autofocus required>
-                <input type="password" name="password-reg" id="password-input" placeholder="Password" required>
+                <input type="text" name="login-register" id="login-input" placeholder="Login" autofocus required>
+                <input type="password" name="password-register" id="password-input" placeholder="Password" required>
                 <input type="password" name="password-reg-again" id="password-input" placeholder="Password again" required>
             </fieldset>
             <fieldset id="actions">
@@ -43,5 +43,22 @@
         </form>
         {{ message_register }}
     </div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $.post ('index.php',{login:'leroy',password:'password'},function(data,status){
+        if( status=='success' ){
+            eval('var obj='+data);
+            if(obj.auth==true)
+                alert('Вы успешно прошли авторизацию!')
+            else
+                alert('Логин либо пароль не верны')
+        }else{
+            alert('В процессе отправки произошла ошибка :(')
+        }
+    })
+</script>
 {% endblock %}
 </html>

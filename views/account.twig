@@ -53,7 +53,7 @@
             <ul class="menu">
                 <li {% if select == 'followers' %} class="menu-selected" {% endif %} ><a href="{{ path('followers', {'user' : userPage }) }} ">Followers</a></li>
                 <li {% if select == 'following' %} class="menu-selected" {% endif %} ><a href="{{ path('following', {'user' : userPage }) }} ">Following</a></li>
-                <li {% if select == 'favorits' %} class="menu-selected" {% endif %} ><a href="{{ path('following', {'user' : userPage }) }} ">Favorits</a></li>
+                <li {% if select == 'favorites' %} class="menu-selected" {% endif %} ><a href="{{ path('favorites', {'user' : userPage }) }} ">Favorites</a></li>
             </ul>
         </div>
     </div>

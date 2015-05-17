@@ -9,34 +9,120 @@
 
 {% block body %}
     <div id="content">
-        <div id="content-line">
-        <form action="{{ path("avatar_upload", {'user' : userSession}) }}" method="post" enctype="multipart/form-data">
-            Select image to upload:
-            <input type="file" name="fileToUpload" placeholder="Browse photo" id="fileToUpload">
-            <input type="submit" id="upload" value="Upload" name="submit">
-            {{ message }}
-        </form>
-
+        <div id="avatar-upload-area">
+            <form action="{{ path("avatar_upload", {'user' : userSession}) }}" method="post" enctype="multipart/form-data">
+                Upload avatar:
+                <input type="file" name="fileToUpload" placeholder="Browse photo" id="fileToUpload" onchange="previewFile()">
+                <div id="photo-img"><img src="#" width="500" id="preview"></div>
+                {{ message }}
+            </form>
+        </div>
+        <div id="upload-area">
         <form method="post" target="/" action="/register">
-            <fieldset id="inputs">
-                <input type="text" name="forename" id="forename-input" placeholder="Forename" autofocus required>
-                <input type="text" name="surname" id="surname-input" placeholder="Surname" required>
-                <select name="gender[]">
-                    <option>   Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-                <input type="text" name="description" id="description-input" placeholder="Description" required>
-                <input type="text" name="birthday-day" id="birthday-day-input" placeholder="Birthday day" required>
-                <input type="text" name="birthday-month" id="birthday-month-input" placeholder="Birthday month" required>
-                <input type="text" name="birthday-year" id="birthday-year-input" placeholder="Birthday year" required>
-                <input type="text" name="country" id="country-input" placeholder="Country" required>
-                <input type="text" name="city" id="city-input" placeholder="City" required>
-            </fieldset>
-            <fieldset id="actions">
-                <input type="submit" id ="submit" value="Enter">
-            </fieldset>
+            <table id="settings">
+                <tr>
+                    <td id="columns">Forename : </td>
+                    <td width="70%"><input type="text" name="forename" id="inputs" autofocus required></td>
+                </tr>
+                <tr>
+                    <td id="columns">Surname : </td>
+                    <td><input type="text" name="surname" id="inputs" required></td>
+                </tr>
+                <tr>
+                    <td id="columns">Gender : </td>
+                    <td><select name="gender[]">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td id="columns">Birthday : </td>
+                    <td>
+                        <select name="birthday-day[]">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <select name="birthday-month[]">
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                        <select name="birthday-year[]">
+                            <option value="2000">2000</option>
+                            <option value="1999">1999</option>
+                            <option value="1998">1998</option>
+                            <option value="1997">1997</option>
+                            <option value="1996">1996</option>
+                            <option value="1995">1995</option>
+                            <option value="1994">1994</option>
+                            <option value="1993">1993</option>
+                            <option value="1992">1992</option>
+                            <option value="1991">1991</option>
+                            <option value="1990">1990</option>
+                            <option value="1989">1989</option>
+                            <option value="1988">1988</option>
+                            <option value="1987">1987</option>
+                            <option value="1986">1986</option>
+                            <option value="1985">1985</option>
+                        </select>
+                     </td>
+                </tr>
+                <tr>
+                    <td id="columns">Country : </td>
+                    <td> <input type="text" name="country" id="inputs" placeholder="Country" required></td>
+                </tr>
+                <tr>
+                    <td id="columns">City : </td>
+                    <td><input type="text" name="city" id="inputs" placeholder="City" required></td>
+                </tr>
+                <tr>
+                    <td id="columns">About : </td>
+                        <td><textarea name="description" id="description-input" placeholder="Description" required></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> <input type="submit" id ="submit" value="Enter"></td>
+                </tr>
+            </table>
         </form>
         </div>
+            {% block javascripts %}
+                {{ parent() }}
+                <script type="text/javascript">
+                    function previewFile() {
+                        var preview = document.querySelector('#preview');
+                        var file    = document.querySelector('input[type=file]').files[0];
+                        var reader  = new FileReader();
+
+                        reader.onloadend = function () {
+                            preview.src = reader.result;
+                        };
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        } else {
+                            preview.src = "";
+                        }
+                    }
+                </script>
+            {% endblock %}
     </div>
 {% endblock %}

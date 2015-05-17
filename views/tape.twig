@@ -25,10 +25,12 @@
                 <div id="likes">
                         {{ post.count_likes }}
                         {% if post.image_is_liked == 'TRUE' %}
-                            <input type="submit" id="liked" value="" name="submit">
+                            <input type="submit" id="liked" value="" name="submit-like">
                         {% else %}
-                            <input type="submit" id="like" value="" name="submit">
+                            <input type="submit" id="like" value="" name="submit-like">
                         {% endif %}
+                    {{ post.count_favorites }}
+                    <input type="submit" id="favorit" value="" name="submit">
                 </div>
                 <div class="border-comments">
                     <div id="comments">
@@ -57,7 +59,7 @@
                     <div id="comment-block">
                         <div id="avatar"><img src="upload/{{ userSession }}/avatar" width="150"></div>
                         <textarea  name="comment" id="comment-input" placeholder="Comment..."></textarea>
-                        <input type="submit" id="send" value="send" name="submit">
+                        <input type="submit" id="send" value="send" name="submit-comment">
                     </div>
                 </div>
             </form>

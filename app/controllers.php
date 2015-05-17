@@ -107,9 +107,10 @@ $app->post('/feed', function(Request $request) use ($app) {
 
     if ($request->get('comment')) {
         $app['social']->saveComment($login, $url, $comment, $userSession['id']);
-
-    } else {
+    } else if (isset($_POST['submit-like'])){
         $app['social']->saveLike($login, $url, $userSession['id']);
+    } else if (isset($_POST['submit-favorites'])) {
+        $app['social']->savefavorits($login, $url, $userSession['id']);
     }
     $images = $app['social']->loadFeed($userSession['id']);
     return $app['twig']->render('tape.twig', array(
@@ -249,6 +250,51 @@ $app->get('/{user}/following', function($user) use ($app){
     ));
 })->bind('following');
 
+$app->get('/{user}/favorites', function($user) use ($app){
+    $sql = "SELECT id FROM users WHERE login=?";
+    $id_follower = $app['db']->fetchAssoc($sql, array( (string) $user));
+    $sql = "SELECT id_following FROM followers WHERE id_follower =?";
+    $following = $app['db']->fetchAll($sql, array((int) $id_follower['id']));
+
+    $id_following = array();
+    foreach ($following as $value){
+        foreach ($value as $key => $type){
+            $id_following[] = $type;
+        }
+    }
+    $usersFollowing = array();
+    $sql = "SELECT id, login FROM users WHERE id=?";
+    foreach($id_following as $value){
+        $usersFollowing[] = $app['db']->fetchAssoc($sql, array((int) $value));
+    }
+    $userSession = $app['session']->get('user');
+    if ($user != $userSession['login']){
+        $user_check_flag = 'TRUE';
+    } else $user_check_flag = 'FALSE';
+    $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_follower['id']);
+    $count_follower = $app['social']->countFollower($id_follower['id']);
+    $count_following = $app['social']->countFollowing($id_follower['id']);
+    $count_images = $app['social']->countImages($user);
+
+    foreach($usersFollowing as &$value) {
+        $value['count_follower_user'] = $app['social']->countFollower($value['id']);
+        $value['count_following_user'] = $app['social']->countFollowing($value['id']);
+        $value['count_images_user'] = $app['social']->countImages($value['login']);
+    }
+
+    return $app['twig']->render('follow.twig', array(
+        'users' => $usersFollowing,
+        'userPage' => $user,
+        'select' => 'following',
+        'userSession'=> $userSession['login'],
+        'user_check_flag' => $user_check_flag,
+        'user_is_followed' => $user_is_followed,
+        'count_follower' => $count_follower,
+        'count_following' => $count_following,
+        'count_images' => $count_images
+    ));
+})->bind('favorites');
+
 $app->get('/{user}/follow', function($user) use ($app) {
     $sql = "SELECT * FROM users WHERE login=?";
     $post = $app['db']->fetchAssoc($sql, array((string) $user));
@@ -312,7 +358,8 @@ $app->get('/{user}/settings', function ($user) use ($app){
 $app->post('/{user}/settings',  function(Request $request, $user) use ($app) {
     $result = $app['upload']->uploadAvatar($user,  __DIR__."/../web/upload/");
     $userSession= $app['session']->get('user');
-    $app['image']->saveAvatarInDB($user, $result['url']);
+    $request->get('');
+    //$app['image']->saveAvatarInDB($user, $result['url']);
 
     return $app['twig']->render('settings.twig', array(
         'userSession' => $userSession['login'],
