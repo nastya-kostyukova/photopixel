@@ -45,7 +45,11 @@ body{
     width: 100%;
     height: 220px;
     margin-top: 160px;
+    /*background: linear-gradient(top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;*/
     background: -moz-linear-gradient(top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;
+    background: -webkit-linear-gradient(top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;
+    background: -o-linear-gradient(top , transparent 0%, rgba(0, 0, 0, 0.7) 100%) repeat scroll 0% 0% transparent;
+
 }
 
 #cover-backgroud{

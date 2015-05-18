@@ -23,14 +23,20 @@
                     {{ post.published_date }}
                 </div>
                 <div id="likes">
-                        {{ post.count_likes }}
+                    {{ post.count_likes }}
+
                         {% if post.image_is_liked == 'TRUE' %}
                             <input type="submit" id="liked" value="" name="submit-like">
                         {% else %}
                             <input type="submit" id="like" value="" name="submit-like">
                         {% endif %}
                     {{ post.count_favorites }}
-                    <input type="submit" id="favorit" value="" name="submit">
+                    {% if post.image_is_favorit == 'TRUE' %}
+                        <input type="submit" id="favorited" value="" name="submit-favorites">
+                    {% else %}
+                        <input type="submit" id="favorit" value="" name="submit-favorites">
+                    {% endif %}
+
                 </div>
                 <div class="border-comments">
                     <div id="comments">

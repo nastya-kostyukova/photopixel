@@ -9,36 +9,35 @@
 
 {% block body %}
     <div id="content">
+                    <form action="{{ path("avatar_upload", {'user' : userSession}) }}" method="post" enctype="multipart/form-data">
         <div id="avatar-upload-area">
-            <form action="{{ path("avatar_upload", {'user' : userSession}) }}" method="post" enctype="multipart/form-data">
+
                 Upload avatar:
                 <input type="file" name="fileToUpload" placeholder="Browse photo" id="fileToUpload" onchange="previewFile()">
-                <div id="photo-img"><img src="#" width="500" id="preview"></div>
+                <div id="photo-img"><img src="/upload/{{ userSession }}/avatar" width="500" id="preview"></div>
                 {{ message }}
-            </form>
         </div>
         <div id="upload-area">
-        <form method="post" target="/" action="/register">
             <table id="settings">
                 <tr>
                     <td id="columns">Forename : </td>
-                    <td width="70%"><input type="text" name="forename" id="inputs" autofocus required></td>
+                    <td width="70%"><input type="text" name="forename" id="inputs" value="{{ settings.forename }}" autofocus required></td>
                 </tr>
                 <tr>
                     <td id="columns">Surname : </td>
-                    <td><input type="text" name="surname" id="inputs" required></td>
+                    <td><input type="text" name="surname" id="inputs" value="{{ settings.surname }}" required></td>
                 </tr>
                 <tr>
                     <td id="columns">Gender : </td>
-                    <td><select name="gender[]">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                    <td><select name="gender">
+                        <option value="Male" {% if settings.gender == 'Male' %} selected="selected" {% endif %}>Male</option>
+                        <option value="Female" {% if settings.gender == 'Female' %} selected="selected" {% endif %}>Female</option>
                         </select></td>
                 </tr>
                 <tr>
                     <td id="columns">Birthday : </td>
                     <td>
-                        <select name="birthday-day[]">
+                        <select name="birthday-day">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -52,7 +51,7 @@
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>
-                        <select name="birthday-month[]">
+                        <select name="birthday-month">
                             <option value="January">January</option>
                             <option value="February">February</option>
                             <option value="March">March</option>
@@ -66,7 +65,7 @@
                             <option value="November">November</option>
                             <option value="December">December</option>
                         </select>
-                        <select name="birthday-year[]">
+                        <select name="birthday-year">
                             <option value="2000">2000</option>
                             <option value="1999">1999</option>
                             <option value="1998">1998</option>
@@ -88,22 +87,22 @@
                 </tr>
                 <tr>
                     <td id="columns">Country : </td>
-                    <td> <input type="text" name="country" id="inputs" placeholder="Country" required></td>
+                    <td> <input type="text" name="country" id="inputs" value="{{ settings.country }}" required></td>
                 </tr>
                 <tr>
                     <td id="columns">City : </td>
-                    <td><input type="text" name="city" id="inputs" placeholder="City" required></td>
+                    <td><input type="text" name="city" id="inputs" value="{{ settings.city }}" required></td>
                 </tr>
                 <tr>
                     <td id="columns">About : </td>
-                        <td><textarea name="description" id="description-input" placeholder="Description" required></textarea></td>
+                        <td><textarea name="description" id="description-input" required>{{ settings.description }}</textarea></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td> <input type="submit" id ="submit" value="Enter"></td>
                 </tr>
             </table>
-        </form>
+
         </div>
             {% block javascripts %}
                 {{ parent() }}
@@ -124,5 +123,7 @@
                     }
                 </script>
             {% endblock %}
+        </form>
     </div>
+
 {% endblock %}

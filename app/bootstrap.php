@@ -36,6 +36,9 @@ $app['social'] = $app->share(function($app){
     return new \RaptorStore\Social($app['db']);
 });
 
+$app['settings'] = $app->share(function($app){
+    return new \RaptorStore\Settings($app['db']);
+});
 $app['user_repository'] = $app->share(function($app) {
     // create a dummy user to get the encoder
     $user = new User();

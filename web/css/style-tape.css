@@ -85,11 +85,19 @@ body{
     background-image: url(like.png);
 }
 
-#favorit {
-    background-image: url(favorites.png);
+#favorit, #favorited {
+    background-size: 22px;
     width: 22px;
     height: 22px;
     border: 0 none;
+}
+
+#favorited {
+    background-image: url(favorites_gray.jpg);
+}
+
+#favorit {
+    background-image: url(favorites.png);
 }
 
 #date{

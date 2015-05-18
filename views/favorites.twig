@@ -1,0 +1,14 @@
+{% extends 'account.twig' %}
+
+{% block content %}
+
+    {% if flag_no_image  == 'TRUE'%}
+        No favotites photos :(
+    {% else %}
+        {%  for image in images %}
+
+            <div class="content-img"><a href="/upload/{{ image.login }}/{{ image.url }}" rel="lightbox" title="my caption"><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></a></div>
+        {% endfor %}
+    {% endif %}
+
+{%  endblock %}

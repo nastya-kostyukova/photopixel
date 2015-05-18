@@ -1,14 +1,33 @@
 {% extends 'account.twig' %}
 
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/colorbox/jquery.colorbox.js"></script>
+    <script src="/colorbox/jquery.colorbox-min.js"></script>
+    <script>
+        $(document).ready(function(){
+            //Examples of how to assign the Colorbox event to elements
+            $(".group1").colorbox({rel:'.group1'});
+            //Example of preserving a JavaScript event for inline calls.
+            /*$("#click").click(function(){
+                $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
+                return false;
+            });*/
+        });
+
+
+    </script>
+{% endblock %}
 {% block content %}
 
     {% if flag_no_image  == 'TRUE'%}
 
         Not uploaded any photo :(
     {% else %}
+        <div class="group1">
+            <div class="content-img"><a rel="content-img" href="/content/daisy.jpg" title='123'<img src="/content/daisy.jpg" width="400"></a></div>
         {%  for image in images %}
-
-                <div class="content-img"><a href="/upload/{{ image.login }}/{{ image.url }}" rel="lightbox" title="my caption"><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></a></div>
+            <div class="content-img"><a rel="content-img" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}><img src="/upload/{{ image.login }}/{{ image.url }}" width="400"></a></div>
             {% if user_check_flag == 'FALSE' %}
                 <form action="delete_image" id="delete-image" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="login" value="{{ image.url }}">
@@ -16,6 +35,7 @@
                 </form>
             {%  endif %}
         {% endfor %}
+        </div>
     {% endif %}
 
 {%  endblock %}

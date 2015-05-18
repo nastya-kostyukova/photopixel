@@ -2,6 +2,7 @@
 /** @var $app \Silex\Application */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use RaptorStore\Image;
 /**
  * Controllers and routes
@@ -48,10 +49,13 @@ $app->post('/register', function(Request $request) use ($app) {
             $app['db']->insert('users', array('login' => $login, 'password' => $password));
         }
     }
+    $response = array("code" => 100, "success" => true, "message" => $result['message']);
+    //you can return result as JSON
+    //return new Response(json_encode($response));
     return $app['twig']->render('homepage.twig', array(
         'message_register' => $result['message'],
         'message_login' => ''));
-});
+})->bind('test');
 
 $app->post('/login', function(Request $request) use ($app){
     $login = $request->get('login');
@@ -60,16 +64,18 @@ $app->post('/login', function(Request $request) use ($app){
 
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
+
     if (($login === $post['login']) && (md5($password) == $post['password'])) {
         $app['session']->set('user' , array('login' => $login, 'id' => $post['id']));
-        return $app->redirect('/'.$login.'');
+        $response = array("status" => "ok", "url" => '/'.$login);
     }
     else {
-        $result['message']='Invalid login or password';
-        return $app['twig']->render('homepage.twig', array(
-            'message_register' => '',
-            'message_login' => $result['message']));
+        $response = array("status" => "error", "message" => 'Invalid login or password');
+        //you can return result as JSON
     }
+    return new Response(json_encode($response),
+        200,
+        ['Content-Type' => 'application/json']);
 });
 
 $app->get('/admin', function(\Silex\Application $app) {
@@ -110,7 +116,7 @@ $app->post('/feed', function(Request $request) use ($app) {
     } else if (isset($_POST['submit-like'])){
         $app['social']->saveLike($login, $url, $userSession['id']);
     } else if (isset($_POST['submit-favorites'])) {
-        $app['social']->savefavorits($login, $url, $userSession['id']);
+        $app['social']->saveFavorites($login, $url, $userSession['id']);
     }
     $images = $app['social']->loadFeed($userSession['id']);
     return $app['twig']->render('tape.twig', array(
@@ -275,17 +281,16 @@ $app->get('/{user}/favorites', function($user) use ($app){
     $count_follower = $app['social']->countFollower($id_follower['id']);
     $count_following = $app['social']->countFollowing($id_follower['id']);
     $count_images = $app['social']->countImages($user);
+    $images = $app['social']->loadFavorites($id_follower['id']);
 
-    foreach($usersFollowing as &$value) {
-        $value['count_follower_user'] = $app['social']->countFollower($value['id']);
-        $value['count_following_user'] = $app['social']->countFollowing($value['id']);
-        $value['count_images_user'] = $app['social']->countImages($value['login']);
-    }
+    if (0 == count($images)) $flag_no_image = 'TRUE'; else $flag_no_image = 'FALSE';
 
-    return $app['twig']->render('follow.twig', array(
+    return $app['twig']->render('favorites.twig', array(
+        'flag_no_image' => $flag_no_image,
+        'images' => $images,
         'users' => $usersFollowing,
         'userPage' => $user,
-        'select' => 'following',
+        'select' => 'favorites',
         'userSession'=> $userSession['login'],
         'user_check_flag' => $user_check_flag,
         'user_is_followed' => $user_is_followed,
@@ -348,9 +353,12 @@ $app->post('/{user}/upload',  function(Request $request, $user) use ($app) {
 
 $app->get('/{user}/settings', function ($user) use ($app){
     $userSession = $app['session']->get('user');
+    $settings = $app['settings']->loadSettings($userSession['id']);
+
     return $app['twig']->render('settings.twig', array(
         'avatar' => "upload/".$userSession['login'].'/avatar',
         'userSession'=> $userSession['login'],
+        'settings' => $settings,
         'message' => ''
     ));
 })->bind('settings');
@@ -358,13 +366,25 @@ $app->get('/{user}/settings', function ($user) use ($app){
 $app->post('/{user}/settings',  function(Request $request, $user) use ($app) {
     $result = $app['upload']->uploadAvatar($user,  __DIR__."/../web/upload/");
     $userSession= $app['session']->get('user');
-    $request->get('');
+    $forename = $request->get('forename');
+    $surname = $request->get('surname');
+    $gender = $request->get('gender');
+    $birthdayDay = $request->get('birthday-day');
+    $birthdayMonth = $request->get('birthday-month');
+    $birthdayYear = $request->get('birthday-year');
+    $country = $request->get('country');
+    $city = $request->get('city');
+    $description = $request->get('description');
+    $result = $app['settings']->saveSettings($userSession['id'], $forename, $surname, $gender, $birthdayDay, $birthdayMonth, $birthdayYear, $country, $city, $description);
+
     //$app['image']->saveAvatarInDB($user, $result['url']);
+    $settings = $app['settings']->loadSettings($userSession['id']);
 
     return $app['twig']->render('settings.twig', array(
         'userSession' => $userSession['login'],
         'message' => $result['message'],
         'avatar' => "upload/".$userSession['login'].'/avatar',
+        'settings' => $settings,
     ));
 })->bind('avatar_upload');
 

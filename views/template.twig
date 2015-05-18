@@ -7,7 +7,9 @@
     </title>
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
     <link rel="stylesheet" type="text/css" href="/css/{% block style_name %}{% endblock %}.css" />
-    <link rel="stylesheet" href="/lightbox/css/lightbox.css" type="text/css" media="screen" />
+
+    <link rel="stylesheet" href="colorbox/colorbox.css" />
+
 </head>
 <body>
 <div id="header">
@@ -27,7 +29,6 @@
 {% block javascripts %}
     <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-
 {% endblock %}
     {% block body %}
     {% endblock %}

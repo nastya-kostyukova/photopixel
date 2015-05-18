@@ -67,22 +67,22 @@ body
 
 #login
 {
-    height: 170px;
-    width: 400px;
-    margin: -150px 0 0 -230px;
+    height: 23%;
+    width: 21.5%;
+
     padding: 30px;
-    position: absolute;
+
     top: 30%;
     left: 70%;
 }
 
 #login-reg
 {
-    height: 240px;
-    width: 400px;
-    margin: -150px 0 0 -230px;
+    height: 23%;
+    width: 21.5%;
+
     padding: 30px;
-    position: absolute;
+
     top: 55%;
     left: 70%;
 }
@@ -164,7 +164,7 @@ fieldset
     margin: 25px 0 0 0;
 }
 
-#submit
+#submit-reg, #submit-log
 {
     background-color: #ffb94b;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#fddb6f), to(#ffb94b));
@@ -197,7 +197,7 @@ fieldset
     color: #8f5a0a;
 }
 
-#submit:hover,#submit:focus
+#submit-reg:hover,#submit-reg:focus,  #submit-log:hover,  #submit-log:focus
 {
     background-color: #fddb6f;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ffb94b), to(#fddb6f));
@@ -208,7 +208,7 @@ fieldset
     background-image: linear-gradient(top, #ffb94b, #fddb6f);
 }
 
-#submit:active
+#submit-reg:active,  #submit-log:active
 {
     outline: none;
 
@@ -222,6 +222,15 @@ fieldset
     border: none;
 }
 
+#results-log {
+    width: 100%;
+    line-height: 30px;
+    border-radius: 2%;
+    border-color:  rgba(255, 0, 0, 1);
+    background-color: rgba(255, 0, 0, 0.2);
+    text-align: center;
+    color: rgba(255, 0, 0, 1);
+}
 #actions a
 {
     color: #3151A2;

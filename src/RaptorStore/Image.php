@@ -19,7 +19,7 @@ class Image {
 
     public function getUserImages($id)
     {
-        $sql = "SELECT url FROM images WHERE id_author = ?";
+        $sql = "SELECT url, title FROM images WHERE id_author = ?";
         $post = $this->conn->fetchAll($sql, array((int) $id));
         return $post;
     }

@@ -18,47 +18,61 @@
         </div>
     </div>
     <div id="login">
-        <form method="post" target="/" action="/login">
+
             <fieldset id="inputs">
                 <input type="text" name="login" id="login-input" placeholder="Login" autofocus required>
                 <input type="password" name="password" id="password-input" placeholder="Password" required>
+                <div id="results-log"></div>
             </fieldset>
             <fieldset id="actions">
-                <input type="submit" id ="submit" value="Log in">
+                <input type="submit" id ="submit-log" value="Log in">
                 <a href="">Забыли пароль?</a>
             </fieldset>
-        </form>
-        {{ message_login }}
+
     </div>
     <div id="login-reg">
-        <form method="post" target="/" action="/register">
+        <form method="post" action="/register" enctype="multipart/form-data">
             <fieldset id="inputs">
                 <input type="text" name="login-register" id="login-input" placeholder="Login" autofocus required>
                 <input type="password" name="password-register" id="password-input" placeholder="Password" required>
                 <input type="password" name="password-reg-again" id="password-input" placeholder="Password again" required>
             </fieldset>
             <fieldset id="actions">
-                <input type="submit" id ="submit" value="Sign up">
+                <input type="submit" id ="submit-reg" value="Sign up">
             </fieldset>
         </form>
-        {{ message_register }}
+        <div id="results-reg"></div>
     </div>
 {% endblock %}
 {% block javascripts %}
 <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    $.post ('index.php',{login:'leroy',password:'password'},function(data,status){
-        if( status=='success' ){
-            eval('var obj='+data);
-            if(obj.auth==true)
-                alert('Вы успешно прошли авторизацию!')
-            else
-                alert('Логин либо пароль не верны')
-        }else{
-            alert('В процессе отправки произошла ошибка :(')
-        }
-    })
+    function aButtonPressed(){
+        var login_input =  $("#login-input").val();
+        var password_input =  $("#password-input").val();
+        var reg = document.querySelector('#results-reg');
+        //alert(10000);
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            //dataType : 'json',
+            data: "login="+login_input+"&password="+password_input,
+            success: function(response) {
+                reg = response;
+                //console.log(response.message);
+                if(response.status == 'error')
+                    $('#results-log').html(response.message);
+                if(response.status == 'ok')
+                    window.location.href = response.url;
+            }
+        });
+
+    }
+
+    $(document).ready(function() {
+        $('#submit-log').on('click', function(){aButtonPressed();});
+    });
 </script>
 {% endblock %}
 </html>
