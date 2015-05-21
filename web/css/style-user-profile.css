@@ -75,6 +75,10 @@ body{
     overflow: hidden;
 }
 
+#user-profile-img img{
+    margin-left: -45%;
+}
+
 #user-profile-name{
     padding: 5%;
     font-family: Tahoma, Geneva, sans-serif;
@@ -139,7 +143,7 @@ body{
 }
 
 .content-img img {
-    margin-left: -40%;
+    margin-left: -34%;
 }
 
 #followed, #follow{
@@ -257,10 +261,15 @@ body{
 }
 #user-name-follow{
     float: right;
-    margin-right: 67%;
+    margin-right: 60%;
     color: #295C95;
+    text-decoration: none;
 }
 
+#user-name-follow a {
+    color: #295C95;
+    text-decoration: none;
+}
 #user-name{
     color: #295C95;
     font-size: 15pt;

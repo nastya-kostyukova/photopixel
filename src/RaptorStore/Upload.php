@@ -49,7 +49,7 @@ class Upload
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                 $url = basename($_FILES["fileToUpload"]["name"]);
                 $message .= "The file " . $url . " has been uploaded.";
-                $newName = hash_file('md5', $target_file);
+                $newName = hash_file('md5', $target_file).'.jpg';
                 rename($target_file, $target_dir . '/' . $newName);
                 $url = $newName;
             } else {
@@ -105,8 +105,9 @@ class Upload
             {
                 $url = basename( $_FILES["fileToUpload"]["name"]);
                 $message .= "The file ". $url. " has been uploaded.";
-                rename($target_file, $target_dir.'/avatar');
-                $url = 'avatar';
+                if (file_exists($target_dir.'/avatar')) unlink($target_dir.'/avatar.jpg');
+                rename($target_file, $target_dir.'/avatar.jpg');
+                $url = 'avatar.jpg';
             } else {
                 $message .= "Sorry, there was an error uploading your file.";
             }

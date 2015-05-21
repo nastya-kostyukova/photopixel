@@ -7,41 +7,43 @@
     <link rel="stylesheet" type="text/css" href="/css/style-welcome.css" />
 </head>
 {% block body %}
-    <div class="container-text">
-        <div class="welcome-header-text">
-            Welcome to Photopixels!<br>
+    <div id="field">
+        <div class="container-text">
+            <div class="welcome-header-text">
+                Welcome to Photopixels!<br>
+            </div>
+            <div class="welcome-text">
+                Keep in touch with friends and other wonderful people.<br>
+                Get instant updates about things that interest you.<br>
+                And watch the events unfolding in real time, from different sides.
+            </div>
         </div>
-        <div class="welcome-text">
-            Keep in touch with friends and other wonderful people.<br>
-            Get instant updates about things that interest you.<br>
-            And watch the events unfolding in real time, from different sides.
+        <div id="form">
+            <div id="login">
+                <fieldset id="inputs">
+                    <input type="text" name="login" id="login-input" placeholder="Login" autofocus required>
+                    <input type="password" name="password" id="password-input" placeholder="Password" required>
+                    <div id="results-log"></div>
+                </fieldset>
+                <fieldset id="actions">
+                    <input type="submit" id ="submit-log" value="Log in">
+                    <a href="">Забыли пароль?</a>
+                </fieldset>
+            </div>
+            <div id="login-reg">
+                <form method="post" action="/register" enctype="multipart/form-data">
+                    <fieldset id="inputs">
+                        <input type="text" name="login-register" id="login-input" placeholder="Login" autofocus required>
+                        <input type="password" name="password-register" id="password-input" placeholder="Password" required>
+                        <input type="password" name="password-reg-again" id="password-input" placeholder="Password again" required>
+                    </fieldset>
+                    <fieldset id="actions">
+                        <input type="submit" id ="submit-reg" value="Sign up">
+                    </fieldset>
+                </form>
+                <div id="results-reg"></div>
+            </div>
         </div>
-    </div>
-    <div id="login">
-
-            <fieldset id="inputs">
-                <input type="text" name="login" id="login-input" placeholder="Login" autofocus required>
-                <input type="password" name="password" id="password-input" placeholder="Password" required>
-                <div id="results-log"></div>
-            </fieldset>
-            <fieldset id="actions">
-                <input type="submit" id ="submit-log" value="Log in">
-                <a href="">Забыли пароль?</a>
-            </fieldset>
-
-    </div>
-    <div id="login-reg">
-        <form method="post" action="/register" enctype="multipart/form-data">
-            <fieldset id="inputs">
-                <input type="text" name="login-register" id="login-input" placeholder="Login" autofocus required>
-                <input type="password" name="password-register" id="password-input" placeholder="Password" required>
-                <input type="password" name="password-reg-again" id="password-input" placeholder="Password again" required>
-            </fieldset>
-            <fieldset id="actions">
-                <input type="submit" id ="submit-reg" value="Sign up">
-            </fieldset>
-        </form>
-        <div id="results-reg"></div>
     </div>
 {% endblock %}
 {% block javascripts %}
@@ -52,7 +54,7 @@
         var login_input =  $("#login-input").val();
         var password_input =  $("#password-input").val();
         var reg = document.querySelector('#results-reg');
-        //alert(10000);
+
         $.ajax({
             type: 'POST',
             url: '/login',

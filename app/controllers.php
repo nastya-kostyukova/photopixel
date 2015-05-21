@@ -71,7 +71,6 @@ $app->post('/login', function(Request $request) use ($app){
     }
     else {
         $response = array("status" => "error", "message" => 'Invalid login or password');
-        //you can return result as JSON
     }
     return new Response(json_encode($response),
         200,
@@ -114,9 +113,21 @@ $app->post('/feed', function(Request $request) use ($app) {
     if ($request->get('comment')) {
         $app['social']->saveComment($login, $url, $comment, $userSession['id']);
     } else if (isset($_POST['submit-like'])){
-        $app['social']->saveLike($login, $url, $userSession['id']);
+        $result = $app['social']->saveLike($login, $url, $userSession['id']);
+        $response = array("status" => $result['status'], "count" => $result['count']);
+
+
+        return new Response(json_encode($response),
+            200,
+            ['Content-Type' => 'application/json']);
+
     } else if (isset($_POST['submit-favorites'])) {
-        $app['social']->saveFavorites($login, $url, $userSession['id']);
+        $result = $app['social']->saveFavorites($login, $url, $userSession['id']);
+        $response = array("status" => $result['status'], "count" => $result['count']);
+print_r($response);
+        return new Response(json_encode($response),
+            200,
+            ['Content-Type' => 'application/json']);
     }
     $images = $app['social']->loadFeed($userSession['id']);
     return $app['twig']->render('tape.twig', array(

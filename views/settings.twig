@@ -38,32 +38,32 @@
                     <td id="columns">Birthday : </td>
                     <td>
                         <select name="birthday-day">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
+                            <option value="1" {% if settings.birthday_day == '1' %} selected="selected" {% endif %}>1</option>
+                            <option value="2" {% if settings.birthday_day == '2' %} selected="selected" {% endif %}>2</option>
+                            <option value="3" {% if settings.birthday_day == '3' %} selected="selected" {% endif %}>3</option>
+                            <option value="4" {% if settings.birthday_day == '4' %} selected="selected" {% endif %}>4</option>
+                            <option value="5" {% if settings.birthday_day == '5' %} selected="selected" {% endif %}>5</option>
+                            <option value="6 {% if settings.birthday_day == '6' %} selected="selected" {% endif %}">6</option>
+                            <option value="7" {% if settings.birthday_day == '7' %} selected="selected" {% endif %}>7</option>
+                            <option value="8" {% if settings.birthday_day == '8' %} selected="selected" {% endif %}>8</option>
+                            <option value="9" {% if settings.birthday_day == '9' %} selected="selected" {% endif %}>9</option>
+                            <option value="10" {% if settings.birthday_day == '10' %} selected="selected" {% endif %}>10</option>
+                            <option value="11" {% if settings.birthday_day == '11' %} selected="selected" {% endif %}>11</option>
+                            <option value="12" {% if settings.birthday_day == '12' %} selected="selected" {% endif %}>12</option>
                         </select>
                         <select name="birthday-month">
-                            <option value="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
+                            <option value="January" {% if settings.birthday_month == 'January' %} selected="selected" {% endif %}>January</option>
+                            <option value="February" {% if settings.birthday_month == 'February' %} selected="selected" {% endif %}>February</option>
+                            <option value="March" {% if settings.birthday_month == 'March' %} selected="selected" {% endif %}>March</option>
+                            <option value="April" {% if settings.birthday_month == 'April' %} selected="selected" {% endif %}>April</option>
+                            <option value="May" {% if settings.birthday_month == 'May' %} selected="selected" {% endif %}>May</option>
+                            <option value="June" {% if settings.birthday_month == 'June' %} selected="selected" {% endif %}>June</option>
+                            <option value="July" {% if settings.birthday_month == 'July' %} selected="selected" {% endif %}>July</option>
+                            <option value="August" {% if settings.birthday_month == 'August' %} selected="selected" {% endif %}>August</option>
+                            <option value="September" {% if settings.birthday_month == 'September' %} selected="selected" {% endif %}>September</option>
+                            <option value="October" {% if settings.birthday_month == 'October' %} selected="selected" {% endif %}>October</option>
+                            <option value="November" {% if settings.birthday_month == 'November' %} selected="selected" {% endif %}>November</option>
+                            <option value="December" {% if settings.birthday_month == 'December' %} selected="selected" {% endif %}>December</option>
                         </select>
                         <select name="birthday-year">
                             <option value="2000">2000</option>
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td> <input type="submit" id ="submit" value="Enter"></td>
+                    <td> <input type="submit" id ="submit" value="Save"></td>
                 </tr>
             </table>
 

@@ -72,19 +72,22 @@ body{
     color: #595959;
 }
 
-#liked, #like{
+.like{
     background-size: 22px;
     width: 22px;
     height: 22px;
     border: 0 none;
 }
-#liked {
+.like.active {
     background-image: url(like_gray.png);
 }
-#like{
+.like{
     background-image: url(like.png);
 }
 
+.count-likes {
+    width: 5px;
+}
 #favorit, #favorited {
     background-size: 22px;
     width: 22px;

@@ -11,11 +11,11 @@
     {% for post in posts %}
     <div id="content">
         <div id="post">
-            <form action="feed" method="post" enctype="multipart/form-data">
+            <!--<form action="feed" method="post" enctype="multipart/form-data">-->
                 <input type="hidden" name="login" value="{{ post.login }}">
                 <input type="hidden" name="url" value="{{ post.url }}">
 
-                <a href="/{{ post.login }}" id="avatar"><img src="upload/{{ post.login }}/avatar" width="150"></a>
+                <a href="/{{ post.login }}" id="avatar"><img src="upload/{{ post.login }}/avatar.jpg" width="150"></a>
                 <a href="/{{ post.login }}" id="user-name">{{ post.login }}</a>
                 <div id="description">{{ post.description }} </div>
                 <div id="photo-post"><img src="upload/{{ post.login }}/{{ post.url }}" width="650"> </div>
@@ -23,12 +23,13 @@
                     {{ post.published_date }}
                 </div>
                 <div id="likes">
+                    <div class="count-likes">
                     {{ post.count_likes }}
-
+                    </div>
                         {% if post.image_is_liked == 'TRUE' %}
-                            <input type="submit" id="liked" value="" name="submit-like">
+                            <input type="submit" class="like active" value="" name="submit-like">
                         {% else %}
-                            <input type="submit" id="like" value="" name="submit-like">
+                            <input type="submit" class="like" value="" name="submit-like">
                         {% endif %}
                     {{ post.count_favorites }}
                     {% if post.image_is_favorit == 'TRUE' %}
@@ -43,7 +44,7 @@
                         <table width="100%">
                         {% for comment in post.comments %}
                             <tr>
-                                <td width="20%"><a href="/{{ comment.login }}"><img src="upload/{{ comment.login }}/avatar" width="100"></a></td>
+                                <td width="20%"><a href="/{{ comment.login }}"><img src="upload/{{ comment.login }}/avatar.jpg" width="100"></a></td>
                                 <td>
                                     <table>
                                         <tr><a href="/{{ comment.login }}" id="user-name-comment">{{ comment.login }}</a></tr>
@@ -63,15 +64,50 @@
                     </table>
                     </div>
                     <div id="comment-block">
-                        <div id="avatar"><img src="upload/{{ userSession }}/avatar" width="150"></div>
+                        <div id="avatar"><img src="upload/{{ userSession }}/avatar.jpg" width="150"></div>
                         <textarea  name="comment" id="comment-input" placeholder="Comment..."></textarea>
                         <input type="submit" id="send" value="send" name="submit-comment">
                     </div>
                 </div>
-            </form>
+           <!-- </form>-->
         </div>
         <div id="content-line"></div>
     </div>
     {% endfor %}
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('body').on('click','.like',function(e) {
+                e.preventDefault();
+                var url = $(this).closest('#post').find('input[name="url"]').val();
+                var login_input = $(this).closest('#post').find('input[name="login"]').val();
+                var th = $(this);
+                var countLikes = document.querySelector('#count-likes');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/feed',
+                    data: "login="+login_input+"&url="+url+'&submit-like=1',
+                    success: function(response) {
+                        reg = response;
+                        console.log(response);
+                        if (response.status == 0)
+                            th.removeClass('active');
+                        else
+                            th.addClass('active');
+                        $('.count-likes').html(response.count);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#submit-log').on('click', function(){aButtonPressed();});
+        });
+    </script>
 {% endblock %}
