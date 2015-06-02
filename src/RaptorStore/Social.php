@@ -69,6 +69,14 @@ class Social {
         return $result;
     }
 
+    public function countFavorites($id_image, $id_user)
+    {
+        $sql = "SELECT idfavorites FROM favorites WHERE id_image=? && id_user=?";
+        $post = $this->conn->fetchAll($sql, array((int) $id_image, (int) $id_user));
+        $count = count($post);
+        return $count;
+    }
+
     public function saveFavorites($login, $url, $id_author)
     {
         $res = true;
@@ -87,12 +95,13 @@ class Social {
         if ($res) {
             if (count($post) === 0) {
                 $this->conn->insert('favorites', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
-                $result = 'favorited';
+                $result['status'] = 1;
             }
             if (count($post) > 0)
                 $this->conn->delete('favorites', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
-                $result = 'favorit';
+            $result['status'] = 0;
         }
+        $result['count'] = $this->countFavorites($id_image['id'], $id_user['id']);
         return $result;
     }
 

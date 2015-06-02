@@ -31,11 +31,13 @@
                         {% else %}
                             <input type="submit" class="like" value="" name="submit-like">
                         {% endif %}
-                    {{ post.count_favorites }}
+                    <div class="count-favorites">
+                        {{ post.count_favorites }}
+                    </div>
                     {% if post.image_is_favorit == 'TRUE' %}
-                        <input type="submit" id="favorited" value="" name="submit-favorites">
+                        <input type="submit" class="favorites active" value="" name="submit-favorites">
                     {% else %}
-                        <input type="submit" id="favorit" value="" name="submit-favorites">
+                        <input type="submit" class="favorites" value="" name="submit-favorites">
                     {% endif %}
 
                 </div>
@@ -104,10 +106,29 @@
                     }
                 });
             });
+
+            $('#content').on('click','.favorites',function(e) {
+                e.preventDefault();
+                var url = $(this).closest('#post').find('input[name="url"]').val();
+                var login_input = $(this).closest('#post').find('input[name="login"]').val();
+                var th = $(this);
+                var countFavorites = document.querySelector('.count-favorites');
+                $.ajax({
+                    type: 'POST',
+                    url: '/feed',
+                    data: "login="+login_input+"&url="+url+'&submit-favorites=1',
+                    success: function(response) {
+                        reg = response;
+                        console.log(response);
+                        if (response.status == 0)
+                            th.removeClass('active');
+                        else
+                            th.addClass('active');
+                        $('.count-favorites').html(response.count);
+                    }
+                });
+            });
         });
 
-        $(document).ready(function() {
-            $('#submit-log').on('click', function(){aButtonPressed();});
-        });
     </script>
 {% endblock %}

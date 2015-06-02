@@ -10,7 +10,7 @@
         {%  for image in images %}
 
             <div class="content-img">
-                <a class="group3" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}>
+                <a class="group-img" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}>
                     <img src="/upload/{{ image.login }}/{{ image.url }}" width="400">
                 </a>
             </div>
@@ -30,7 +30,7 @@
     <script>
         $(document).ready(function(){
             //Examples of how to assign the Colorbox event to elements
-            $(".group3").colorbox({rel:'group3'});
+            $(".group-img").colorbox({rel:'group-img'});
 
             //Example of preserving a JavaScript event for inline calls.
             $("#click").click(function(){

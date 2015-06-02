@@ -34,7 +34,7 @@ body{
 
 #cover{
     width:100%;
-    background: url(background.jpg);
+    background: url(1.jpg);
     height: 400px;
     clear:both;
     display: block;
@@ -63,6 +63,7 @@ body{
     margin-left: 12.5%;
     height: 190px;
     width: 700px;
+    font-weight: bold;
 }
 
 #user-profile-img{
@@ -144,6 +145,16 @@ body{
 
 .content-img img {
     margin-left: -34%;
+}
+
+.group-img.cboxElement img{
+    z-index: 2;
+    background-color: rgba(0,0,0,0.15);
+}
+.group-img.cboxElement img a:hover {
+    z-index: 2;
+    background-color: rgba(0,0,0,0.3);
+ -moz-box-shadow: 0 0 10px #ccc; -webkit-box-shadow: 0 0 10px #ccc; box-shadow: 0 0 10px #ccc;
 }
 
 #followed, #follow{

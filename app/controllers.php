@@ -22,25 +22,22 @@ $app->get('/exit', function(\Silex\Application $app) {
 })->bind('exit');
 
 $app->post('/register', function(Request $request) use ($app) {
-    $login = $request->get('login-reg');
-    $password = $request->get('password-reg');
+
+    $login = $request->get('login-register');
+    $password = $request->get('password-register');
     $password_again = $request->get('password-reg-again');
     $result['message']='';
 
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
-    if ($login === $post['login'])
-    {
+    if (!isset($login)) {
+        $result['message']='This login empty';
+    } elseif ((isset($login)) && ($login === $post['login'])) {
         $result['message']='This login is used';
-        return $app['twig']->render('homepage.twig', array('message_register' => $result['message'], 'message_login' => ''));
     }
-
-    if (!($password === $password_again))
-    {
+    if (!($password === $password_again)) {
         $result['message']='Password and password again dont identical';
-        return $app['twig']->render('homepage.twig', array('message_register' => $result['message'], 'message_login' => ''));
     }
-
     if (isset($login) && isset($password) && isset($password_again)) {
         $result = $app['user_repository']->check($login, $password);
         if ( $result['status']=== 'ok')
@@ -49,13 +46,12 @@ $app->post('/register', function(Request $request) use ($app) {
             $app['db']->insert('users', array('login' => $login, 'password' => $password));
         }
     }
-    $response = array("code" => 100, "success" => true, "message" => $result['message']);
-    //you can return result as JSON
-    //return new Response(json_encode($response));
-    return $app['twig']->render('homepage.twig', array(
-        'message_register' => $result['message'],
-        'message_login' => ''));
-})->bind('test');
+    $response = array("status" => $result['status'], "message" => $result['message']);
+
+    return new Response(json_encode($response),
+        200,
+        ['Content-Type' => 'application/json']);
+});
 
 $app->post('/login', function(Request $request) use ($app){
     $login = $request->get('login');
@@ -64,10 +60,11 @@ $app->post('/login', function(Request $request) use ($app){
 
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
-
     if (($login === $post['login']) && (md5($password) == $post['password'])) {
+        file_put_contents('data.txt', '   Login '.$login, FILE_APPEND);
         $app['session']->set('user' , array('login' => $login, 'id' => $post['id']));
         $response = array("status" => "ok", "url" => '/'.$login);
+        file_put_contents('data.txt', var_export($response, true), FILE_APPEND);
     }
     else {
         $response = array("status" => "error", "message" => 'Invalid login or password');
@@ -77,9 +74,7 @@ $app->post('/login', function(Request $request) use ($app){
         ['Content-Type' => 'application/json']);
 });
 
-$app->get('/admin', function(\Silex\Application $app) {
-    return $app['twig']->render('admin.twig');
-})->bind('admin');
+
 
 $app->get('/register', function(\Silex\Application $app) {
     return $app->redirect('/');
@@ -122,9 +117,10 @@ $app->post('/feed', function(Request $request) use ($app) {
             ['Content-Type' => 'application/json']);
 
     } else if (isset($_POST['submit-favorites'])) {
+
         $result = $app['social']->saveFavorites($login, $url, $userSession['id']);
         $response = array("status" => $result['status'], "count" => $result['count']);
-print_r($response);
+//print_r($response);
         return new Response(json_encode($response),
             200,
             ['Content-Type' => 'application/json']);
@@ -139,44 +135,65 @@ print_r($response);
 $app->get('/{user}', function ( $user) use ($app) {
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $user));
-    $id_following = $post['id'];
-    if (isset($id_following)) {
-        $images = $app['image']->getArrayUserImages($post);
-        if (!($app['session']->has('user'))) {
-            $app->redirect('/');
+    $userSession = $app['session']->get('user');
+    if (1 == $post['ROLE']) {
+        $sql = "SELECT id, login FROM users WHERE ROLE=0";
+        $users = $app['db']->fetchAll($sql);
+        foreach ($users as &$user) {
+            $user['count_follower'] = $app['social']->countFollower($user['id']);
+            $user['count_following'] = $app['social']->countFollowing($user['id']);
+            $user['count_images'] = $app['social']->countImages($user['login']);
         }
-        $userSession = $app['session']->get('user');
-        $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_following);
-
-        if ($user != $userSession['login']){
-            $user_check_flag = 'TRUE';
-        } else $user_check_flag = 'FALSE';
-
-        if (isset($images['error'])){
-            $flag_no_image = 'TRUE';
-        } else $flag_no_image = 'FALSE';
-        $count_follower = $app['social']->countFollower($id_following);
-        $count_following = $app['social']->countFollowing($id_following);
-        $count_images = $app['social']->countImages($user);
-        return $app['twig']->render('image.twig', array(
-            'userPage' => $user,
-            'message' => '',
-            'count_follower' => $count_follower,
-            'count_following' => $count_following,
-            'avatar' => "upload/".$user.'/avatar',
-            'images' => $images,
-            'select' => 'home',
-            'userSession'=> $userSession['login'],
-            'user_is_followed' => $user_is_followed,
-            'user_check_flag' => $user_check_flag,
-            'flag_no_image' => $flag_no_image,
-            'count_images' => $count_images
+        return $app['twig']->render('admin.twig', array(
+            'userSession' => $userSession['login'],
+            'users'=> $users,
         ));
+    } else {
+        $id_following = $post['id'];
+        if (isset($id_following)) {
+            $images = $app['image']->getArrayUserImages($post);
+            if (!($app['session']->has('user'))) {
+                $app->redirect('/');
+            }
+
+            $user_is_followed = $app['social']->userIsFollowed($user, $userSession, $id_following);
+
+            if ($user != $userSession['login']) {
+                $user_check_flag = 'TRUE';
+            } else $user_check_flag = 'FALSE';
+
+            if (isset($images['error'])) {
+                $flag_no_image = 'TRUE';
+            } else $flag_no_image = 'FALSE';
+            $count_follower = $app['social']->countFollower($id_following);
+            $count_following = $app['social']->countFollowing($id_following);
+            $count_images = $app['social']->countImages($user);
+            return $app['twig']->render('image.twig', array(
+                'userPage' => $user,
+                'message' => '',
+                'count_follower' => $count_follower,
+                'count_following' => $count_following,
+                'avatar' => "upload/" . $user . '/avatar',
+                'images' => $images,
+                'select' => 'home',
+                'userSession' => $userSession['login'],
+                'user_is_followed' => $user_is_followed,
+                'user_check_flag' => $user_check_flag,
+                'flag_no_image' => $flag_no_image,
+                'count_images' => $count_images
+            ));
+        } else {
+            //print_r($app['session']->get('user'));
+            return "Error.This user doesnt exist";}
     }
-    else return "Error.This user doesnt exist";
 })->bind('user_account');
 
-
+$app->post('/{user}', function(Request $request) use ($app){
+    $userToDelete = $request->get('userToDelete');
+    $userSession = $app['session']->get('user');
+    $app['db']->delete('users', array('login' => $userToDelete));
+    return $app->redirect('/'.$userSession['login']);
+})->bind('delete_user');
 
 $app->get('/{user}/followers', function($user) use ($app){
     $sql = "SELECT id FROM users WHERE login=?";

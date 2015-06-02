@@ -1,5 +1,49 @@
-{% extends 'template.twig' %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin.css" />
 
-{% block body %}
-    <h1>Welcome!</h1>
-{% endblock %}
+    <link rel="stylesheet" href="colorbox/colorbox.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="colorbox/jquery.colorbox-min.js"></script>
+</head>
+<body>
+<div id="header">
+    <div class="wrapper clearfix">
+        <div id="head-img"><a href="/"><img src="../css/images/Y4HEAT-nFuI.png" width="220"></a></div>
+
+        <div id="exit">
+            <a href="{{ path("exit") }}">Exit</a>
+        </div>
+    </div>
+</div>
+<div class="users-area">
+    USERS:
+    <div class="users">
+    {% for user in users %}
+        <div class="each-user-area">
+            <div class="avatar"><a href="/{{ user.login }}"> <img src="/upload/{{ user.login }}/avatar.jpg" width="160"></a></div>
+            <div class="user-name"><a href="/{{ user.login }}"> {{ user.login }}</a></div>
+            <div class="count-info-user">
+                Photos: {{ user.count_images }}
+                Followers: {{ user.count_follower }}
+                Following: {{ user.count_following }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <form method="post"  action="{{ path('delete_user', {'user': userSession}) }}">
+        <label id="form-delete">User to delete: <input type="text" name="userToDelete" id="user-to-delete"></label>
+        <input type="submit" name="submit">
+    </form>
+</div>
+<div class="wrapper clearfix"></div>
+</body>
+</html>

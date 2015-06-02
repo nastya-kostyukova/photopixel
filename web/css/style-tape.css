@@ -88,18 +88,18 @@ body{
 .count-likes {
     width: 5px;
 }
-#favorit, #favorited {
+
+.favorites {
     background-size: 22px;
     width: 22px;
     height: 22px;
     border: 0 none;
 }
 
-#favorited {
+.favorites.active {
     background-image: url(favorites_gray.jpg);
 }
-
-#favorit {
+.favorites {
     background-image: url(favorites.png);
 }
 
