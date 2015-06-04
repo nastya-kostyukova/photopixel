@@ -24,26 +24,65 @@
         </div>
     </div>
 </div>
+<form method="post"  action="{{ path('delete_user', {'user': userSession}) }}">
 <div class="users-area">
-    USERS:
-    <div class="users">
-    {% for user in users %}
-        <div class="each-user-area">
-            <div class="avatar"><a href="/{{ user.login }}"> <img src="/upload/{{ user.login }}/avatar.jpg" width="160"></a></div>
-            <div class="user-name"><a href="/{{ user.login }}"> {{ user.login }}</a></div>
-            <div class="count-info-user">
-                Photos: {{ user.count_images }}
-                Followers: {{ user.count_follower }}
-                Following: {{ user.count_following }}
-            </div>
+        <table >
+        <div class="users">
+        {% for user in users %}
+            <tr>
+            <td><input type="radio" name="selectedUser" value="{{ user.id }}"></td>
+            <td><div class="each-user-area">
+
+                <div class="avatar"><a href="/{{ user.login }}"> <img src="/upload/{{ user.login }}/avatar.jpg" width="160"></a></div>
+                <div class="user-name"><a href="/{{ user.login }}"> {{ user.login }}</a></div>
+                <div class="count-info-user">
+                    Photos: {{ user.count_images }}
+                    Followers: {{ user.count_follower }}
+                    Following: {{ user.count_following }}
+                </div>
+                </div>
+            </td>
+            </tr>
+        {% endfor %}
         </div>
-    {% endfor %}
-    </div>
-    <form method="post"  action="{{ path('delete_user', {'user': userSession}) }}">
-        <label id="form-delete">User to delete: <input type="text" name="userToDelete" id="user-to-delete"></label>
-        <input type="submit" name="submit">
-    </form>
+        </table>
+        <input type="submit" name="deleteUser" id="deleteUser" value="Delete">
+        <input type="submit" name="showImages" id="showImages" value="Show images">
+
 </div>
-<div class="wrapper clearfix"></div>
+
+<div class="images-area">
+    {% if images == '' %}
+    Select user to show his photos
+    {% else %}
+        {% for image in images %}
+        <div class="content-img">
+            <a class="group-img" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}>
+                <img src="/upload/{{ image.login }}/{{ image.url }}" width="400">
+            </a>
+        </div>
+    <form action="delete_image" id="delete-image" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="login" value="{{ image.url }}">
+            <a href="{{ path('delete_image', {'user': image.login, 'image' : image.url}) }}"><img src="/css/delete_remove_6735.png" width="20"></a>
+        </form>
+        {% endfor %}
+    {% endif %}
+</div>
+    {% block javascripts %}
+
+        <script>
+            $(document).ready(function(){
+                //Examples of how to assign the Colorbox event to elements
+                $(".group-img").colorbox({rel:'group-img'});
+
+                //Example of preserving a JavaScript event for inline calls.
+                $("#click").click(function(){
+                    $('#click').css({"background-color":"#f00", "color":"#fff", "cursor":"inherit"}).text("Open this window again and this message will still be here.");
+                    return false;
+                });
+            });
+        </script>
+    {% endblock %}
+</form>
 </body>
 </html>

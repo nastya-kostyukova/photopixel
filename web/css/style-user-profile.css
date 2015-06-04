@@ -147,16 +147,6 @@ body{
     margin-left: -34%;
 }
 
-.group-img.cboxElement img{
-    z-index: 2;
-    background-color: rgba(0,0,0,0.15);
-}
-.group-img.cboxElement img a:hover {
-    z-index: 2;
-    background-color: rgba(0,0,0,0.3);
- -moz-box-shadow: 0 0 10px #ccc; -webkit-box-shadow: 0 0 10px #ccc; box-shadow: 0 0 10px #ccc;
-}
-
 #followed, #follow{
     margin-top: 10%;
     margin-left: 18%;

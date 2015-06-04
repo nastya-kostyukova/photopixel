@@ -147,6 +147,7 @@ $app->get('/{user}', function ( $user) use ($app) {
         return $app['twig']->render('admin.twig', array(
             'userSession' => $userSession['login'],
             'users'=> $users,
+            'images'=> '',
         ));
     } else {
         $id_following = $post['id'];
@@ -183,16 +184,36 @@ $app->get('/{user}', function ( $user) use ($app) {
                 'count_images' => $count_images
             ));
         } else {
-            //print_r($app['session']->get('user'));
             return "Error.This user doesnt exist";}
     }
 })->bind('user_account');
 
 $app->post('/{user}', function(Request $request) use ($app){
-    $userToDelete = $request->get('userToDelete');
     $userSession = $app['session']->get('user');
-    $app['db']->delete('users', array('login' => $userToDelete));
-    return $app->redirect('/'.$userSession['login']);
+    file_put_contents('data.txt', var_export($_POST, true));
+    if (isset($_POST['deleteUser'])) {
+        $app['admin']->deleteUser($_POST['selectedUser']);
+    }
+    $images='';
+
+    if(isset($_POST['showImages'])) {
+        $images = $app['admin']->showImages($_POST['selectedUser']);
+    }
+
+    $sql = "SELECT id, login FROM users WHERE ROLE=0";
+    $users = $app['db']->fetchAll($sql);
+    foreach ($users as &$user) {
+        $user['count_follower'] = $app['social']->countFollower($user['id']);
+        $user['count_following'] = $app['social']->countFollowing($user['id']);
+        $user['count_images'] = $app['social']->countImages($user['login']);
+    }
+    return $app['twig']->render('admin.twig', array(
+        'userSession' => $userSession['login'],
+        'users'=> $users,
+        'images'=> $images,
+    ));
+
+    //return $app->redirect('/'.$userSession['login']);
 })->bind('delete_user');
 
 $app->get('/{user}/followers', function($user) use ($app){
@@ -420,7 +441,14 @@ $app->get('/{user}/{image}', function ($user, $image) use ($app) {
     $userSession= $app['session']->get('user');
     $sql = "SELECT id FROM users WHERE login=?";
     $id = $app['db']->fetchAssoc($sql, array((string) $user));
-    if ($id['id'] === $userSession['id'])
+    $sql = "SELECT ROLE FROM users WHERE id=?";
+    $role = $app['db']->fetchAssoc($sql, array((int) $userSession['id']));
+    $userSession['ROLE'] = $role['ROLE'];
+
+    file_put_contents('data.txt', var_export($userSession ,true), FILE_APPEND);
+    if (($id['id'] === $userSession['id']) || ($userSession['ROLE'] == 1)) {
+        file_put_contents('data.txt', 111, FILE_APPEND);
         $app['db']->delete('images', array('url' => $image, 'id_author' => $id['id']));
-    return $app->redirect('/'.$user);
+    }
+    return $app->redirect('/'.$userSession['login']);
 })->bind('delete_image');
