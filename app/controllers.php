@@ -190,15 +190,15 @@ $app->get('/{user}', function ( $user) use ($app) {
 
 $app->post('/{user}', function(Request $request) use ($app){
     $userSession = $app['session']->get('user');
-    file_put_contents('data.txt', var_export($_POST, true));
+    $images='';
     if (isset($_POST['deleteUser'])) {
         $app['admin']->deleteUser($_POST['selectedUser']);
-    }
-    $images='';
-
-    if(isset($_POST['showImages'])) {
+    } elseif(isset($_POST['showImages'])) {
         $images = $app['admin']->showImages($_POST['selectedUser']);
+    } elseif(isset($_POST['giveAdminRoots'])) {
+        $app['admin']->giveAdmin($_POST['selectedUser']);
     }
+
 
     $sql = "SELECT id, login FROM users WHERE ROLE=0";
     $users = $app['db']->fetchAll($sql);

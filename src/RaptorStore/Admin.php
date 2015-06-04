@@ -28,7 +28,6 @@ class Admin {
     }
 
     public function showImages($id) {
-        file_put_contents('data.txt', ' '.$id.' ', FILE_APPEND);
         $sql="SELECT * FROM images WHERE id_author=?";
         $images = $this->conn->fetchAll($sql, array((int) $id));
 
@@ -42,10 +41,11 @@ class Admin {
         }
         return $images;
     }
-    public function deleteImage($id) {
-        $this->conn->delete('images', array('id' => $id));
-    }
 
+    public function  giveAdmin($id) {
+        $this->conn->update('users', array('ROLE' => 1), array('id' => $id));
+    }
+    
     public function deleteAllImages($id_author) {
         $this->conn->delete('images', array('id_author' => $id_author));
     }

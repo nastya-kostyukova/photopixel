@@ -26,6 +26,9 @@
 </div>
 <form method="post"  action="{{ path('delete_user', {'user': userSession}) }}">
 <div class="users-area">
+    <input type="submit" name="deleteUser" id="deleteUser" value="Delete">
+    <input type="submit" name="showImages" id="showImages" value="Show images">
+    <input type="submit" name="giveAdminRoots" id="giveAdminRoots" value="Give admin roots">
         <table >
         <div class="users">
         {% for user in users %}
@@ -46,8 +49,6 @@
         {% endfor %}
         </div>
         </table>
-        <input type="submit" name="deleteUser" id="deleteUser" value="Delete">
-        <input type="submit" name="showImages" id="showImages" value="Show images">
 
 </div>
 
