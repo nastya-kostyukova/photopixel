@@ -32,6 +32,15 @@ class Social {
         return $res;
     }
 
+    public function getComment($login, $url, $comment, $id_author)
+    {
+        $sql= "SELECT i.id FROM images i INNER JOIN users u ON (i.id_author =u.id) WHERE url=? && login=?";
+        $id_image = $this->conn->fetchAssoc($sql, array((string) $url, (string) $login));
+        $sql = "SELECT DISTINCT u.login, c.comment, c.id_user, c.date, c.id_image FROM comments c INNER JOIN users u JOIN images i ON (i.id = c.id_image) && (u.id = c.id_author) WHERE c.id_image=? && c.id_author=? && i.url=? && c.comment=?";
+        $comment = $this->conn->fetchAssoc($sql, array((int) $id_image['id'], (int) $id_author, (string) $url, (string) $comment));
+        return $comment;
+    }
+
     public function countLikes($id_image, $id_user)
     {
         $sql = "SELECT idlikes FROM likes WHERE id_image=? && id_user=?";
@@ -97,9 +106,10 @@ class Social {
                 $this->conn->insert('favorites', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
                 $result['status'] = 1;
             }
-            if (count($post) > 0)
+            if (count($post) > 0) {
                 $this->conn->delete('favorites', array('id_user' => $id_user['id'], 'id_image' => $id_image['id'], 'id_author' => $id_author));
-            $result['status'] = 0;
+                $result['status'] = 0;
+            }
         }
         $result['count'] = $this->countFavorites($id_image['id'], $id_user['id']);
         return $result;

@@ -22,11 +22,14 @@ $app->get('/exit', function(\Silex\Application $app) {
 })->bind('exit');
 
 $app->post('/register', function(Request $request) use ($app) {
-
-    $login = $request->get('login-register');
-    $password = $request->get('password-register');
-    $password_again = $request->get('password-reg-again');
+    $login = $request->get('login');
+    $password = $request->get('password');
+    $password_again = $request->get('password-again');
     $result['message']='';
+
+    file_put_contents('data.txt', $login);
+    file_put_contents('data.txt', ' '.$password, FILE_APPEND);
+    file_put_contents('data.txt', ' '.$password_again, FILE_APPEND);
 
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
@@ -34,18 +37,23 @@ $app->post('/register', function(Request $request) use ($app) {
         $result['message']='This login empty';
     } elseif ((isset($login)) && ($login === $post['login'])) {
         $result['message']='This login is used';
+        $result['status']='error';
     }
-    if (!($password === $password_again)) {
+    if (($password !== $password_again)) {
         $result['message']='Password and password again dont identical';
+        $result['status']='error';
     }
-    if (isset($login) && isset($password) && isset($password_again)) {
+    elseif (isset($login) && isset($password) && isset($password_again)) {
         $result = $app['user_repository']->check($login, $password);
+        file_put_contents('data.txt', var_export($result, true), FILE_APPEND);
         if ( $result['status']=== 'ok')
         {
             $password = md5($password);
             $app['db']->insert('users', array('login' => $login, 'password' => $password));
         }
     }
+    file_put_contents('data.txt', var_export($result, true), FILE_APPEND);
+
     $response = array("status" => $result['status'], "message" => $result['message']);
 
     return new Response(json_encode($response),
@@ -61,10 +69,10 @@ $app->post('/login', function(Request $request) use ($app){
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
     if (($login === $post['login']) && (md5($password) == $post['password'])) {
-        file_put_contents('data.txt', '   Login '.$login, FILE_APPEND);
+        //file_put_contents('data.txt', '   Login '.$login, FILE_APPEND);
         $app['session']->set('user' , array('login' => $login, 'id' => $post['id']));
         $response = array("status" => "ok", "url" => '/'.$login);
-        file_put_contents('data.txt', var_export($response, true), FILE_APPEND);
+        //file_put_contents('data.txt', var_export($response, true), FILE_APPEND);
     }
     else {
         $response = array("status" => "error", "message" => 'Invalid login or password');
@@ -104,32 +112,24 @@ $app->post('/feed', function(Request $request) use ($app) {
     $url = $request->get('url');
     $comment = $request->get('comment');
     $userSession = $app['session']->get('user');
+    $response = array();
 
-    if ($request->get('comment')) {
-        $app['social']->saveComment($login, $url, $comment, $userSession['id']);
-    } else if (isset($_POST['submit-like'])){
+    if (isset($_POST['submit-like'])) {
         $result = $app['social']->saveLike($login, $url, $userSession['id']);
         $response = array("status" => $result['status'], "count" => $result['count']);
-
-
-        return new Response(json_encode($response),
-            200,
-            ['Content-Type' => 'application/json']);
+    }elseif (isset($_POST['submit-comment'])){
+        $app['social']->saveComment($login, $url, $comment, $userSession['id']);
+        $response = $app['social']->getComment($login, $url, $comment, $userSession['id']);
+        file_put_contents('data.txt', var_export($response, true), FILE_APPEND);
 
     } else if (isset($_POST['submit-favorites'])) {
 
         $result = $app['social']->saveFavorites($login, $url, $userSession['id']);
         $response = array("status" => $result['status'], "count" => $result['count']);
-//print_r($response);
+    }
         return new Response(json_encode($response),
             200,
             ['Content-Type' => 'application/json']);
-    }
-    $images = $app['social']->loadFeed($userSession['id']);
-    return $app['twig']->render('tape.twig', array(
-        'userSession' => $userSession['login'],
-        'posts' => $images,
-    ));
 });
 
 $app->get('/{user}', function ( $user) use ($app) {
@@ -190,11 +190,9 @@ $app->get('/{user}', function ( $user) use ($app) {
 
 $app->post('/{user}', function(Request $request) use ($app){
     $userSession = $app['session']->get('user');
-    $images='';
+
     if (isset($_POST['deleteUser'])) {
         $app['admin']->deleteUser($_POST['selectedUser']);
-    } elseif(isset($_POST['showImages'])) {
-        $images = $app['admin']->showImages($_POST['selectedUser']);
     } elseif(isset($_POST['giveAdminRoots'])) {
         $app['admin']->giveAdmin($_POST['selectedUser']);
     }
@@ -210,7 +208,7 @@ $app->post('/{user}', function(Request $request) use ($app){
     return $app['twig']->render('admin.twig', array(
         'userSession' => $userSession['login'],
         'users'=> $users,
-        'images'=> $images,
+
     ));
 
     //return $app->redirect('/'.$userSession['login']);
@@ -273,7 +271,8 @@ $app->get('/{user}/following', function($user) use ($app){
         }
     }
     $usersFollowing = array();
-    $sql = "SELECT id, login FROM users WHERE id=?";
+    $sql = "
+SELECT id, login FROM users WHERE id=?";
     foreach($id_following as $value){
         $usersFollowing[] = $app['db']->fetchAssoc($sql, array((int) $value));
     }
@@ -436,6 +435,21 @@ $app->post('/{user}/settings',  function(Request $request, $user) use ($app) {
         'settings' => $settings,
     ));
 })->bind('avatar_upload');
+
+$app->get('/{admin}/{user}', function($admin, $user) use ($app) {
+    $userSession = $app['session']->get('user');
+
+    if ($userSession['login'] === $admin) {
+        $sql = "SELECT id FROM users WHERE login=?";
+        $id = $app['db']->fetchAssoc($sql, array((string)$user));
+        $images = $app['admin']->showImages($id['id']);
+
+        return $app['twig']->render('userInAdmin.twig', array(
+            'images' => $images,
+            'userSession' => $userSession['login'],
+        ));
+    } else return "You have no admin roots";
+})->bind('user_settings_admin');
 
 $app->get('/{user}/{image}', function ($user, $image) use ($app) {
     $userSession= $app['session']->get('user');

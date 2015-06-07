@@ -77,7 +77,7 @@ class UserRepository extends BaseRepository implements UserProviderInterface
         }
         if (strlen($password) < 5)
         {
-            return array ('status' => 'error', 'message' =>  'Password os too short');
+            return array ('status' => 'error', 'message' =>  'Password is too short');
         }
         if (preg_match('[a-Z]|([0-9][a-Z]|-|.)*', $login))
         {
@@ -86,8 +86,6 @@ class UserRepository extends BaseRepository implements UserProviderInterface
         return array('status' => 'ok', 'message' => 'You are registered!');
 
     }
-
-
 
     /**
      * Turns an array of data into a User object

@@ -42,8 +42,8 @@
 
                 </div>
                 <div class="border-comments">
-                    <div id="comments">
-                        <table width="100%">
+                    <table id="comments" width="100%">
+                        <tbody>
                         {% for comment in post.comments %}
                             <tr>
                                 <td width="20%"><a href="/{{ comment.login }}"><img src="upload/{{ comment.login }}/avatar.jpg" width="100"></a></td>
@@ -61,14 +61,14 @@
                                     <div id="content-line"></div>
                                 </td>
                             </tr>
-
                         {% endfor %}
+                        </tbody>
                     </table>
-                    </div>
+
                     <div id="comment-block">
                         <div id="avatar"><img src="upload/{{ userSession }}/avatar.jpg" width="150"></div>
                         <textarea  name="comment" id="comment-input" placeholder="Comment..."></textarea>
-                        <input type="submit" id="send" value="send" name="submit-comment">
+                        <input type="submit" class="send" value="send" name="submit-comment">
                     </div>
                 </div>
            <!-- </form>-->
@@ -125,6 +125,44 @@
                         else
                             th.addClass('active');
                         $('.count-favorites').html(response.count);
+                    }
+                });
+            });
+
+            $('.border-content').on('click','.send',function(e) {
+                e.preventDefault();
+                var url = $(this).closest('#post').find('input[name="url"]').val();
+                var login_input = $(this).closest('#post').find('input[name="login"]').val();
+                var comment = $(this).closest('#post').find('textarea[name="comment"]').val();
+                var th = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/feed',
+                    data: "login="+login_input+"&url="+url+"&comment="+comment+'&submit-comment=1',
+                    success: function(response) {
+
+                        var avatar = '/upload/' + response.login + '/avatar.jpg';
+                        var loginHref = '/' + response.login;
+                        var html = " <tr>" +
+                            "<td width='20%'><img src=" + avatar + " width=\'100\'></a></td>"+
+                                "<td>"+
+                                    "<table>"+
+                                        "<tr><a href="+ loginHref +" id=\'user-name-comment\'>"+ response.login+ "</a></tr>"+
+                                        "<tr><div id=\'comment\'>"+ response.comment+"</div></tr>"+
+                                        "<tr><div id=\'date-comment\'>"+ response.date +"</div>"+
+                                        "</tr>"+
+                                    "</table>"+
+                                "</td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<td colspan=\'2\'>" +
+                                "<div id=\'content-line\'></div>"+
+                                "</td>"+
+                            "</tr>";
+
+                        $('#comments tr:last').after(html);
+                        console.log(response);
                     }
                 });
             });

@@ -8,7 +8,6 @@
     {% else %}
         <div>
         {%  for image in images %}
-
             <div class="content-img">
                 <a class="group-img" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}>
                     <img src="/upload/{{ image.login }}/{{ image.url }}" width="400">

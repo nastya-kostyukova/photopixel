@@ -121,7 +121,7 @@ body{
     line-height: 35px;
 }
 
-#send{
+.send{
     margin-top: 2%;
     background-color: #1A497E;
     background-image: linear-gradient(top, #208FDE, #28609F);

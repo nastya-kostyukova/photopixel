@@ -1,0 +1,56 @@
+{% extends 'admin.twig' %}
+
+{% block title %}
+    {{userSession  }}
+{% endblock %}
+
+{% block body %}
+    <div class="images-area">
+        {% if images == '' %}
+            Select user to show his photos
+        {% else %}
+
+                {% for image in images %}
+
+                    <div class="content-img">
+                    <a class="group-img" href="/upload/{{ image.login }}/{{ image.url }}" title={{ image.title }}>
+                        <img src="/upload/{{ image.login }}/{{ image.url }}" width="400">
+                    </a>
+                    </div>
+                    <form action="delete_image" id="delete-image" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="login" value="{{ image.url }}">
+                        <a href="{{ path('delete_image', {'user': image.login, 'image' : image.url}) }}"><img src="/css/delete_remove_6735.png" width="20"></a>
+                    </form>
+                    <div class="border-comments">
+                    <div id="comments">
+                    <table class="comments-area">
+                    {% for comment in image.comments %}
+                    <tr>
+                        <td width="20%"><a href="/{{ comment.login }}"><img src="/upload/{{ comment.login }}/avatar.jpg" width="100"></a></td>
+                        <td>
+                            <table>
+                                <tr><a href="/{{ comment.login }}" id="user-name-comment">{{ comment.login }}</a></tr>
+                                <tr><div id="comment">{{ comment.comment| raw }}</div></tr>
+                                <tr><div id="date-comment">{{ comment.date }}</div></tr>
+                            </table>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="content-line"></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </table>
+
+                    </div>
+                </div>
+
+                    <div class="clear"></div>
+
+            {% endfor %}
+
+        {% endif %}
+    </div>
+{% endblock %}
