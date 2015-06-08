@@ -27,9 +27,6 @@ $app->post('/register', function(Request $request) use ($app) {
     $password_again = $request->get('password-again');
     $result['message']='';
 
-    file_put_contents('data.txt', $login);
-    file_put_contents('data.txt', ' '.$password, FILE_APPEND);
-    file_put_contents('data.txt', ' '.$password_again, FILE_APPEND);
 
     $sql = "SELECT * FROM users WHERE login = ?";
     $post = $app['db']->fetchAssoc($sql, array((string) $login));
@@ -40,16 +37,17 @@ $app->post('/register', function(Request $request) use ($app) {
         $result['status']='error';
     }
     if (($password !== $password_again)) {
-        $result['message']='Password and password again dont identical';
+        $result['message']="Password and password again don't identical";
         $result['status']='error';
     }
     elseif (isset($login) && isset($password) && isset($password_again)) {
         $result = $app['user_repository']->check($login, $password);
-        file_put_contents('data.txt', var_export($result, true), FILE_APPEND);
-        if ( $result['status']=== 'ok')
-        {
+
+        if ( $result['status']=== 'ok') {
             $password = md5($password);
             $app['db']->insert('users', array('login' => $login, 'password' => $password));
+            mkdir("__DIR__.'/../web/upload/'".$login);
+            copy("__DIR__.'/../web/upload/avatar.jpg'", "__DIR__.'/../web/upload/'".$login.'/avatar.jpg');
         }
     }
     file_put_contents('data.txt', var_export($result, true), FILE_APPEND);
@@ -107,7 +105,6 @@ $app->post('/feed', function(Request $request) use ($app) {
     if (!isset($userSession)) {
         return $app['twig']->redirect('/');
     }
-
     $login = $request->get('login');
     $url = $request->get('url');
     $comment = $request->get('comment');
@@ -120,7 +117,6 @@ $app->post('/feed', function(Request $request) use ($app) {
     }elseif (isset($_POST['submit-comment'])){
         $app['social']->saveComment($login, $url, $comment, $userSession['id']);
         $response = $app['social']->getComment($login, $url, $comment, $userSession['id']);
-        file_put_contents('data.txt', var_export($response, true), FILE_APPEND);
 
     } else if (isset($_POST['submit-favorites'])) {
 
