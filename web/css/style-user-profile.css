@@ -76,10 +76,6 @@ body{
     overflow: hidden;
 }
 
-#user-profile-img img{
-    margin-left: -45%;
-}
-
 #user-profile-name{
     padding: 5%;
     font-family: Tahoma, Geneva, sans-serif;

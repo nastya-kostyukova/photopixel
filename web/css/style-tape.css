@@ -65,11 +65,12 @@ body{
 
 #likes{
     float:right;
-    margin-right: 7%;
+    margin-right: 8%;
     margin-top: 0.5%;
     font-size: 10pt;
     margin-bottom:2%;
     color: #595959;
+    width: 15%;
 }
 
 .like{
@@ -80,13 +81,26 @@ body{
 }
 .like.active {
     background-image: url(like_gray.png);
+    float:left;
+    padding-right: 11%;
 }
 .like{
     background-image: url(like.png);
+    float:left;
+    padding-right:11%;
 }
 
 .count-likes {
     width: 5px;
+    float:left;
+    padding-right: 7%;
+}
+
+.count-favorites {
+    width: 5px;
+    float:left;
+    padding-right: 7%;
+    padding-left: 11%;
 }
 
 .favorites {
@@ -94,13 +108,18 @@ body{
     width: 22px;
     height: 22px;
     border: 0 none;
+    float:left;
 }
 
 .favorites.active {
     background-image: url(favorites_gray.jpg);
+    float:left;
+    padding-right:11%;
 }
 .favorites {
     background-image: url(favorites.png);
+    float:left;
+    padding-right:11%;
 }
 
 #date{
